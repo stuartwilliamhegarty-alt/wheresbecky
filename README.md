@@ -1,2 +1,3 @@
-# wheresbecky
-Becky Website
+# Where's Becky? website
+
+Static GitHub Pages site for wheresbecky.co.uk.
