@@ -3,332 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Campervan electrical calculators for cable size, voltage drop, fuses, energy use, battery capacity and solar yield.">
+  <meta name="description" content="Campervan electrical calculators for cable size, voltage drop, fuses, appliance power use, battery banks, solar arrays and MPPT controller matching.">
   <title>Calculators | Where's Becky?</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site-header">
-  <div class="wrap nav">
-    <a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a>
-    <nav class="nav-links">
-      <a href="becky.html">Becky</a><a href="gear.html">Gear</a><a href="guides.html">Guides</a>
-      <a class="active" href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a>
-    </nav>
-  </div>
-</header>
-
+<header class="site-header"><div class="wrap nav"><a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a><nav class="nav-links"><a href="becky.html">Becky</a><a href="gear.html">Gear</a><a href="guides.html">Guides</a><a class="active" href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a></nav></div></header>
 <main>
-<section class="page-hero">
-  <div class="wrap content">
-    <div class="eyebrow">VAN BUILD TOOLKIT</div>
-    <h1>Calculators that explain the answer.</h1>
-    <p class="lead">Cable size, fuse planning, appliance energy, battery capacity and solar yield. Built for 12V, 24V and 48V systems, with both mm² and AWG where it matters.</p>
-    <div class="calc-nav">
-      <a href="#wire">Cable + fuse</a><a href="#usage">Power usage</a><a href="#battery">Battery size</a><a href="#solar">Solar yield</a>
-    </div>
-  </div>
-</section>
+<section class="page-hero"><div class="wrap content"><div class="eyebrow">VAN BUILD TOOLKIT</div><h1>Build the electrical system before buying the wrong bits.</h1><p class="lead">Cable size, fuses, appliance energy, battery-bank layout, solar strings and MPPT matching. The numbers stay linked so changing one part of the system updates the rest.</p><div class="calc-nav"><a href="#wire">Cable + fuse</a><a href="#usage">Power usage</a><a href="#battery">Battery bank</a><a href="#array">Panels + MPPT</a><a href="#yield">Solar yield</a></div></div></section>
 
-<section class="section anchor-offset" id="wire">
-  <div class="wrap">
-    <div class="section-head">
-      <div><div class="eyebrow">01 • DC CABLING</div><h2>Cable, voltage drop & fuse.</h2></div>
-      <p>Sizes copper cable from system voltage, load and one-way run length. The calculator uses the full positive + negative circuit length internally.</p>
-    </div>
-    <form class="calculator" id="wire-form">
-      <div class="calc-grid">
-        <div class="field"><label for="wire-voltage">System voltage</label><select id="wire-voltage"><option>12</option><option>24</option><option>48</option></select></div>
-        <div class="field"><label for="wire-mode">Enter load as</label><select id="wire-mode"><option value="amps">Amps</option><option value="watts">Watts</option></select></div>
-        <div class="field"><label for="wire-load">Load</label><input id="wire-load" type="number" min="0.1" step="0.1" value="40"><small id="wire-load-unit">Amps</small></div>
-        <div class="field"><label for="wire-length">One-way cable length</label><input id="wire-length" type="number" min="0.1" step="0.1" value="4"><small>Metres from source to load, not there-and-back.</small></div>
-        <div class="field"><label for="wire-drop">Maximum voltage drop</label><select id="wire-drop"><option value="1">1%</option><option value="2">2%</option><option value="3" selected>3%</option><option value="5">5%</option><option value="10">10%</option></select></div>
-        <div class="field"><label for="wire-margin">Fuse/load margin</label><select id="wire-margin"><option value="1">100%</option><option value="1.25" selected>125% planning margin</option></select><small>Manufacturer requirements always take priority.</small></div>
-      </div>
-      <div class="result-grid" aria-live="polite">
-        <div class="result good"><div class="label">Recommended cable</div><div class="value" id="wire-size">—</div></div>
-        <div class="result"><div class="label">Approx. AWG</div><div class="value" id="wire-awg">—</div></div>
-        <div class="result"><div class="label">Actual drop</div><div class="value" id="wire-drop-result">—</div></div>
-        <div class="result"><div class="label">Suggested fuse</div><div class="value" id="wire-fuse">—</div></div>
-      </div>
-      <div class="notice" id="wire-explain">Enter your circuit details to see why a cable size was selected.</div>
-      <div class="notice warn">Planning aid only. Cable ampacity depends on insulation, bundling, temperature, installation method and manufacturer data. The fuse protects the cable; verify the final fuse and cable against the equipment and cable manufacturer's instructions.</div>
-    </form>
-  </div>
-</section>
+<section class="section anchor-offset" id="wire"><div class="wrap"><div class="section-head"><div><div class="eyebrow">01 • DC CABLING</div><h2>Cable, voltage drop & fuse.</h2></div><p>Sizes copper cable from voltage, load and one-way run length. The full positive + negative circuit length is used internally.</p></div><form class="calculator" id="wire-form"><div class="calc-grid"><div class="field"><label for="wire-voltage">System voltage</label><select id="wire-voltage"><option>12</option><option>24</option><option>36</option><option>48</option><option>52</option></select></div><div class="field"><label for="wire-mode">Enter load as</label><select id="wire-mode"><option value="amps">Amps</option><option value="watts">Watts</option></select></div><div class="field"><label for="wire-load">Load</label><input id="wire-load" type="number" min="0.1" step="0.1" value="40"><small id="wire-load-unit">Amps</small></div><div class="field"><label for="wire-length">One-way cable length</label><input id="wire-length" type="number" min="0.1" step="0.1" value="4"><small>Metres from source to load.</small></div><div class="field"><label for="wire-drop">Maximum voltage drop</label><select id="wire-drop"><option value="1">1%</option><option value="2">2%</option><option value="3" selected>3%</option><option value="5">5%</option></select></div><div class="field"><label for="wire-margin">Fuse/load margin</label><select id="wire-margin"><option value="1">100%</option><option value="1.25" selected>125% planning margin</option></select></div></div><div class="result-grid"><div class="result good"><div class="label">Recommended cable</div><div class="value" id="wire-size">—</div></div><div class="result"><div class="label">Approx. AWG</div><div class="value" id="wire-awg">—</div></div><div class="result"><div class="label">Actual drop</div><div class="value" id="wire-drop-result">—</div></div><div class="result"><div class="label">Suggested fuse</div><div class="value" id="wire-fuse">—</div></div></div><div class="notice" id="wire-explain"></div><div class="notice warn">Planning aid only. Final cable ampacity and fuse selection depend on insulation, temperature, bundling, installation method, equipment manuals and local standards.</div></form></div></section>
 
-<section class="section anchor-offset" id="usage">
-  <div class="wrap">
-    <div class="section-head">
-      <div><div class="eyebrow">02 • ENERGY BUDGET</div><h2>What will all this stuff use?</h2></div>
-      <p>Add each appliance, its wattage and daily runtime. AC loads include inverter losses so the battery sees the real bill rather than the brochure version.</p>
-    </div>
-    <div class="calculator">
-      <div class="calc-grid">
-        <div class="field"><label for="usage-voltage">Battery system voltage</label><select id="usage-voltage"><option value="12.8">12V / 12.8V LiFePO₄</option><option value="12">12V nominal</option><option value="24">24V</option><option value="48">48V</option></select></div>
-        <div class="field"><label for="inverter-eff">Inverter efficiency</label><input id="inverter-eff" type="number" min="50" max="100" step="1" value="90"><small>Only applied to AC loads.</small></div>
-      </div>
-      <table class="device-table">
-        <thead><tr><th>Device</th><th>Watts</th><th>Qty</th><th>Hours/day</th><th>Supply</th><th>Wh/day</th><th></th></tr></thead>
-        <tbody id="device-body"></tbody>
-      </table>
-      <div class="calc-actions"><button class="btn secondary" type="button" id="add-device">+ Add device</button></div>
-      <div class="result-grid" aria-live="polite">
-        <div class="result good"><div class="label">Daily energy</div><div class="value" id="usage-wh">0 Wh</div></div>
-        <div class="result"><div class="label">Battery draw</div><div class="value" id="usage-ah">0 Ah/day</div></div>
-        <div class="result"><div class="label">Average load</div><div class="value" id="usage-average">0 W</div></div>
-        <div class="result"><div class="label">30-day energy</div><div class="value" id="usage-month">0 kWh</div></div>
-      </div>
-      <div class="notice">The total from this calculator automatically feeds the battery and solar calculators below, because entering the same numbers three times is how websites slowly become enemies.</div>
-    </div>
-  </div>
-</section>
+<section class="section anchor-offset" id="usage"><div class="wrap"><div class="section-head"><div><div class="eyebrow">02 • ENERGY BUDGET</div><h2>What will all this stuff use?</h2></div><p>Add devices, wattage and daily runtime. AC loads include inverter losses.</p></div><div class="calculator"><div class="calc-grid"><div class="field"><label for="usage-system-voltage">System voltage</label><select id="usage-system-voltage"><option value="12">12V</option><option value="24">24V</option><option value="36">36V</option><option value="48">48V</option><option value="52">52V</option></select></div><div class="field"><label for="inverter-eff">Inverter efficiency</label><input id="inverter-eff" type="number" min="50" max="100" step="1" value="90"><small>Only applied to AC loads.</small></div></div><table class="device-table"><thead><tr><th>Device</th><th>Watts</th><th>Qty</th><th>Hours/day</th><th>Supply</th><th>Wh/day</th><th></th></tr></thead><tbody id="device-body"></tbody></table><div class="calc-actions"><button class="btn secondary" type="button" id="add-device">+ Add device</button></div><div class="result-grid"><div class="result good"><div class="label">Daily energy</div><div class="value" id="usage-wh">0 Wh</div></div><div class="result"><div class="label">Battery draw</div><div class="value" id="usage-ah">0 Ah/day</div></div><div class="result"><div class="label">Average load</div><div class="value" id="usage-average">0 W</div></div><div class="result"><div class="label">30-day energy</div><div class="value" id="usage-month">0 kWh</div></div></div><div class="notice">Daily Wh feeds the battery and solar sections automatically.</div></div></div></section>
 
-<section class="section anchor-offset" id="battery">
-  <div class="wrap">
-    <div class="section-head">
-      <div><div class="eyebrow">03 • STORAGE</div><h2>How much battery do you need?</h2></div>
-      <p>Uses daily energy, desired days off-grid, chemistry and reserve to estimate a practical nominal battery capacity.</p>
-    </div>
-    <form class="calculator" id="battery-form">
-      <div class="calc-grid">
-        <div class="field"><label for="battery-daily">Daily energy use</label><input id="battery-daily" type="number" min="1" step="1" value="1500"><small>Wh/day. Updated automatically from the appliance calculator.</small></div>
-        <div class="field"><label for="battery-voltage">Battery voltage</label><select id="battery-voltage"><option value="12.8">12.8V LiFePO₄</option><option value="12">12V</option><option value="24">24V</option><option value="48">48V</option></select></div>
-        <div class="field"><label for="battery-chem">Battery chemistry</label><select id="battery-chem"><option value="0.9">LiFePO₄ (90% usable planning figure)</option><option value="0.5">AGM (50% usable planning figure)</option><option value="0.5">Flooded lead-acid (50% usable planning figure)</option></select></div>
-        <div class="field"><label for="battery-days">Days without charging</label><input id="battery-days" type="number" min="0.25" step="0.25" value="2"></div>
-        <div class="field"><label for="battery-reserve">Extra reserve</label><input id="battery-reserve" type="number" min="0" max="100" step="1" value="15"><small>Extra capacity above calculated use.</small></div>
-      </div>
-      <div class="result-grid" aria-live="polite">
-        <div class="result good"><div class="label">Recommended capacity</div><div class="value" id="battery-ah">—</div></div>
-        <div class="result"><div class="label">Nominal energy</div><div class="value" id="battery-wh">—</div></div>
-        <div class="result"><div class="label">Usable target</div><div class="value" id="battery-usable">—</div></div>
-        <div class="result"><div class="label">Rounded target</div><div class="value" id="battery-rounded">—</div></div>
-      </div>
-      <div class="notice" id="battery-explain">Battery sizing explanation will appear here.</div>
-    </form>
-  </div>
-</section>
+<section class="section anchor-offset" id="battery"><div class="wrap"><div class="section-head"><div><div class="eyebrow">03 • BATTERY BANK</div><h2>Voltage and chemistry are separate things.</h2></div><p>Pick the system voltage independently from chemistry, then optionally model the physical batteries in series and parallel.</p></div><div class="calculator"><h3>Capacity required from your loads</h3><div class="calc-grid three"><div class="field"><label for="battery-system-voltage">Target system voltage</label><select id="battery-system-voltage"><option value="12">12V</option><option value="24">24V</option><option value="36">36V</option><option value="48">48V</option><option value="52">52V</option><option value="custom">Custom</option></select></div><div class="field" id="custom-system-wrap" style="display:none"><label for="battery-custom-system">Custom system voltage</label><input id="battery-custom-system" type="number" min="1" step="0.1" value="51.2"></div><div class="field"><label for="battery-chem">Battery chemistry</label><select id="battery-chem"><option value="0.9">LiFePO₄</option><option value="0.5">AGM</option><option value="0.5">SLA / sealed lead acid</option><option value="0.5">Flooded lead acid</option><option value="custom">Custom usable percentage</option></select></div><div class="field" id="custom-usable-wrap" style="display:none"><label for="battery-custom-usable">Usable capacity</label><input id="battery-custom-usable" type="number" min="10" max="100" step="1" value="80"><small>Percentage of nominal bank capacity you plan to use.</small></div><div class="field"><label for="battery-daily">Daily energy use</label><input id="battery-daily" type="number" min="1" step="1" value="1500"><small>Wh/day, fed from the appliance calculator.</small></div><div class="field"><label for="battery-days">Days without charging</label><input id="battery-days" type="number" min="0.25" step="0.25" value="2"></div><div class="field"><label for="battery-reserve">Extra reserve</label><input id="battery-reserve" type="number" min="0" max="100" step="1" value="15"></div></div><div class="result-grid"><div class="result good"><div class="label">Recommended capacity</div><div class="value" id="battery-ah">—</div></div><div class="result"><div class="label">Nominal energy</div><div class="value" id="battery-wh">—</div></div><div class="result"><div class="label">Usable target</div><div class="value" id="battery-usable">—</div></div><div class="result"><div class="label">Rounded target</div><div class="value" id="battery-rounded">—</div></div></div><div class="notice" id="battery-explain"></div>
+<h3 class="subhead">Optional battery-bank builder</h3><div class="calc-grid three"><div class="field"><label for="unit-voltage">One battery nominal voltage</label><input id="unit-voltage" type="number" min="1" step="0.1" value="12.8"></div><div class="field"><label for="unit-ah">One battery capacity</label><input id="unit-ah" type="number" min="1" step="1" value="100"><small>Ah of each physical battery.</small></div><div class="field"><label for="series-count">Batteries in each series string</label><input id="series-count" type="number" min="1" max="8" step="1" value="1"></div><div class="field"><label for="parallel-count">Parallel strings</label><input id="parallel-count" type="number" min="1" max="8" step="1" value="1"></div></div><div class="result-grid"><div class="result"><div class="label">Bank voltage</div><div class="value" id="bank-voltage">—</div></div><div class="result"><div class="label">Bank capacity</div><div class="value" id="bank-ah">—</div></div><div class="result"><div class="label">Bank energy</div><div class="value" id="bank-kwh">—</div></div><div class="result"><div class="label">Physical batteries</div><div class="value" id="bank-count">—</div></div></div><div class="diagram" id="battery-diagram"></div></div></div></section>
 
-<section class="section anchor-offset" id="solar">
-  <div class="wrap">
-    <div class="section-head">
-      <div><div class="eyebrow">04 • SOLAR</div><h2>What might the roof make?</h2></div>
-      <p>A planning estimate for a flat or tilted van roof using latitude, month, sky conditions and system losses. It is deliberately a range estimator, not a weather forecast wearing a lab coat.</p>
-    </div>
-    <form class="calculator" id="solar-form">
-      <div class="calc-grid">
-        <div class="field"><label for="solar-watts">Solar array size</label><input id="solar-watts" type="number" min="1" step="1" value="850"><small>Installed panel watts.</small></div>
-        <div class="field"><label for="solar-lat">Latitude</label><input id="solar-lat" type="number" min="-66" max="66" step="0.01" value="51.13"><small>South is negative. High-latitude winter results are especially approximate.</small></div>
-        <div class="field"><label for="solar-month">Month</label><select id="solar-month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9" selected>September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
-        <div class="field"><label for="solar-weather">Typical sky / climate</label><select id="solar-weather"><option value="0.45">Very cloudy / maritime</option><option value="0.60" selected>Temperate / mixed</option><option value="0.75">Mostly sunny</option><option value="0.88">Very sunny / arid</option></select></div>
-        <div class="field"><label for="solar-mount">Panel mounting</label><select id="solar-mount"><option value="flat" selected>Flat roof</option><option value="tilt">Tilted toward the equator</option></select></div>
-        <div class="field"><label for="solar-eff">System efficiency</label><input id="solar-eff" type="number" min="50" max="100" step="1" value="80"><small>Controller, temperature, wiring and other losses.</small></div>
-        <div class="field"><label for="solar-demand">Daily energy demand</label><input id="solar-demand" type="number" min="0" step="1" value="1500"><small>Wh/day. Fed from the appliance calculator.</small></div>
-        <div class="field"><label>Location shortcut</label><button class="btn secondary" type="button" id="use-location">Use my current latitude</button><small id="location-status">Your browser will ask permission.</small></div>
-      </div>
-      <div class="result-grid" aria-live="polite">
-        <div class="result good"><div class="label">Estimated daily solar</div><div class="value" id="solar-daily">—</div></div>
-        <div class="result"><div class="label">Equivalent peak sun</div><div class="value" id="solar-psh">—</div></div>
-        <div class="result"><div class="label">Demand covered</div><div class="value" id="solar-cover">—</div></div>
-        <div class="result"><div class="label">Array for 100%</div><div class="value" id="solar-needed">—</div></div>
-      </div>
-      <div class="notice" id="solar-explain">Solar estimate explanation will appear here.</div>
-      <div class="notice warn">This is a planning estimate based on solar geometry plus a broad climate factor. It does not include local cloud history, shading from trees/buildings, snow, dirt or exact horizon conditions. Real output can vary massively day to day.</div>
-    </form>
-  </div>
-</section>
+<section class="section anchor-offset" id="array"><div class="wrap"><div class="section-head"><div><div class="eyebrow">04 • PV ARRAY + MPPT</div><h2>Use the numbers on the panel label.</h2></div><p>Enter W, Voc, Vmp, Isc and Imp, build the series/parallel array, cold-correct Voc, then compare it with a controller database sourced from official manufacturer specifications.</p></div><div class="calculator"><div class="calc-grid three"><div class="field"><label for="panel-watts">Panel rated power</label><input id="panel-watts" type="number" min="1" step="1" value="425"><small>W</small></div><div class="field"><label for="panel-voc">Open-circuit voltage (Voc)</label><input id="panel-voc" type="number" min="1" step="0.01" value="37.5"><small>V</small></div><div class="field"><label for="panel-vmp">Max-power voltage (Vmp)</label><input id="panel-vmp" type="number" min="1" step="0.01" value="31.5"><small>V</small></div><div class="field"><label for="panel-isc">Short-circuit current (Isc)</label><input id="panel-isc" type="number" min="0.1" step="0.01" value="14.2"><small>A</small></div><div class="field"><label for="panel-imp">Max-power current (Imp)</label><input id="panel-imp" type="number" min="0.1" step="0.01" value="13.5"><small>A</small></div><div class="field"><label for="panel-voc-temp">Voc temperature coefficient</label><input id="panel-voc-temp" type="number" max="0" step="0.01" value="-0.25"><small>% / °C. Often printed on the datasheet rather than the label.</small></div><div class="field"><label for="cold-temp">Lowest expected panel temperature</label><input id="cold-temp" type="number" step="1" value="-10"><small>°C</small></div><div class="field"><label for="panels-series">Panels in series per string</label><input id="panels-series" type="number" min="1" max="20" step="1" value="2"></div><div class="field"><label for="parallel-strings">Parallel strings</label><input id="parallel-strings" type="number" min="1" max="20" step="1" value="1"></div><div class="field"><label for="controller-battery-voltage">Battery-bank voltage</label><select id="controller-battery-voltage"><option value="12">12V</option><option value="24">24V</option><option value="36">36V</option><option value="48">48V</option><option value="52">52V / 51.2V class</option><option value="60">60V</option><option value="72">72V</option></select></div></div><div class="result-grid"><div class="result good"><div class="label">Array power</div><div class="value" id="array-watts">—</div></div><div class="result"><div class="label">Array Voc / cold Voc</div><div class="value" id="array-voc">—</div></div><div class="result"><div class="label">Array Vmp</div><div class="value" id="array-vmp">—</div></div><div class="result"><div class="label">Array Isc / Imp</div><div class="value" id="array-current">—</div></div></div><div class="diagram" id="panel-diagram"></div><div class="notice" id="array-explain"></div>
+<h3 class="subhead">Controller matcher</h3><div class="controller-toolbar"><div class="field"><label for="brand-filter">Manufacturer</label><select id="brand-filter"><option value="all">All researched brands</option><option>Victron</option><option>Renogy</option><option>EPEVER</option><option>Morningstar</option><option>Votronic</option><option>OutBack</option><option>MidNite Solar</option></select></div><div><span class="pill">Official data snapshot: Sep 2026</span></div></div><div class="controller-list" id="controller-list"></div><div class="source-note"><strong>Manufacturer dataset:</strong> Victron SmartSolar, Renogy Rover, EPEVER XTRA/Tracer AN, Morningstar TriStar/GenStar, Votronic MPP Duo Digital, OutBack FLEXmax and MidNite Classic families. Data is a planning snapshot from official product pages/datasheets; always re-check the current manual before purchase or wiring.</div></div></div></section>
+
+<section class="section anchor-offset" id="yield"><div class="wrap"><div class="section-head"><div><div class="eyebrow">05 • SOLAR YIELD</div><h2>What might the roof make?</h2></div><p>Broad planning estimate by latitude, month, roof angle and climate. Useful for comparing scenarios, not pretending next Tuesday's cloud knows our spreadsheet.</p></div><div class="calculator"><div class="calc-grid"><div class="field"><label for="solar-watts">Solar array size</label><input id="solar-watts" type="number" min="1" step="1" value="850"></div><div class="field"><label for="solar-lat">Latitude</label><input id="solar-lat" type="number" min="-66" max="66" step="0.01" value="51.13"></div><div class="field"><label for="solar-month">Month</label><select id="solar-month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9" selected>September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div><div class="field"><label for="solar-weather">Typical climate</label><select id="solar-weather"><option value="0.45">Very cloudy / maritime</option><option value="0.60" selected>Temperate / mixed</option><option value="0.75">Mostly sunny</option><option value="0.88">Very sunny / arid</option></select></div><div class="field"><label for="solar-mount">Panel mounting</label><select id="solar-mount"><option value="flat" selected>Flat roof</option><option value="tilt">Tilted toward equator</option></select></div><div class="field"><label for="solar-eff">System efficiency</label><input id="solar-eff" type="number" min="50" max="100" step="1" value="80"></div><div class="field"><label for="solar-demand">Daily demand</label><input id="solar-demand" type="number" min="0" step="1" value="1500"></div></div><div class="result-grid"><div class="result good"><div class="label">Estimated daily solar</div><div class="value" id="solar-daily">—</div></div><div class="result"><div class="label">Equivalent peak sun</div><div class="value" id="solar-psh">—</div></div><div class="result"><div class="label">Demand covered</div><div class="value" id="solar-cover">—</div></div><div class="result"><div class="label">Array for 100%</div><div class="value" id="solar-needed">—</div></div></div><div class="notice" id="solar-explain"></div><div class="notice warn">This is not a location-specific irradiance database yet. Local cloud history, shading, snow, dirt and horizon conditions can move real production dramatically. A future version can be connected to a proper solar-resource dataset.</div></div></div></section>
 </main>
-
-<footer class="footer">
-  <div class="wrap footer-inner">
-    <div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div>
-    <div class="small">These calculators are planning tools, not a substitute for equipment manuals, qualified electrical advice or applicable regulations.</div>
-  </div>
-</footer>
-
+<footer class="footer"><div class="wrap footer-inner"><div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div><div class="small">Planning tools only. Equipment manuals and applicable electrical standards take priority.</div></div></footer>
 <script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const clamp = (v,min,max) => Math.min(max,Math.max(min,v));
-  const fmt = (n,d=1) => Number.isFinite(n) ? n.toLocaleString(undefined,{maximumFractionDigits:d}) : "—";
-
-  const cables = [
-    {mm:0.5,awg:"20",amp:5},{mm:0.75,awg:"18",amp:8},{mm:1,awg:"17",amp:10},
-    {mm:1.5,awg:"15",amp:15},{mm:2.5,awg:"13",amp:20},{mm:4,awg:"11",amp:30},
-    {mm:6,awg:"9",amp:40},{mm:10,awg:"7",amp:60},{mm:16,awg:"5",amp:85},
-    {mm:25,awg:"3",amp:110},{mm:35,awg:"2",amp:135},{mm:50,awg:"1/0",amp:170},
-    {mm:70,awg:"2/0",amp:210},{mm:95,awg:"3/0",amp:250},{mm:120,awg:"4/0",amp:300}
-  ];
-  const fuses = [2,3,5,7.5,10,15,20,25,30,40,50,60,70,80,100,125,150,175,200,225,250,300];
-  function nextFuse(v){ return fuses.find(x => x >= v) ?? null; }
-  function prevFuse(v){ return [...fuses].reverse().find(x => x <= v) ?? null; }
-
-  function calcWire(){
-    const V = +$("wire-voltage").value;
-    const mode = $("wire-mode").value;
-    const load = Math.max(0,+$("wire-load").value);
-    const oneWay = Math.max(0,+$("wire-length").value);
-    const maxPct = +$("wire-drop").value;
-    const margin = +$("wire-margin").value;
-    $("wire-load-unit").textContent = mode === "amps" ? "Amps" : "Watts";
-    if(!V || !load || !oneWay){ return; }
-    const I = mode === "amps" ? load : load / V;
-    const roundTrip = oneWay * 2;
-    const maxDropV = V * (maxPct/100);
-    const rho = 0.0175;
-    const requiredByDrop = rho * roundTrip * I / maxDropV;
-    const requiredFuse = I * margin;
-    let chosen = cables.find(c => c.mm >= requiredByDrop && c.amp >= requiredFuse);
-    if(!chosen) chosen = cables[cables.length-1];
-
-    const resistance = rho * roundTrip / chosen.mm;
-    const actualDropV = I * resistance;
-    const actualDropPct = actualDropV / V * 100;
-    const lossW = I * actualDropV;
-    const fuse = nextFuse(requiredFuse);
-    const maxFuse = prevFuse(chosen.amp);
-    const fuseOkay = fuse && fuse <= chosen.amp;
-
-    $("wire-size").textContent = chosen.mm + " mm²";
-    $("wire-awg").textContent = "AWG " + chosen.awg;
-    $("wire-drop-result").textContent = fmt(actualDropV,2) + " V / " + fmt(actualDropPct,2) + "%";
-    $("wire-fuse").textContent = fuseOkay ? fuse + " A" : "Increase cable";
-    $("wire-explain").innerHTML =
-      `At <strong>${fmt(I,1)}A</strong>, a ${fmt(oneWay,1)}m one-way run is ${fmt(roundTrip,1)}m of conductor there-and-back. ` +
-      `To stay under ${maxPct}% drop, the maths needs at least <strong>${fmt(requiredByDrop,2)}mm²</strong>. ` +
-      `The calculator steps up to <strong>${chosen.mm}mm² (about AWG ${chosen.awg})</strong>, giving roughly ${fmt(actualDropPct,2)}% drop and ${fmt(lossW,1)}W cable loss. ` +
-      `Its conservative planning ampacity ceiling here is ${chosen.amp}A, so the largest standard fuse shown by this table would be ${maxFuse ?? "—"}A. ` +
-      (fuseOkay ? `With the selected margin, the suggested standard fuse is <strong>${fuse}A</strong>.` :
-       `<strong>The calculated fuse requirement is too high for this planning cable rating. Increase cable size and verify manufacturer data.</strong>`);
-  }
-
-  $("wire-mode").addEventListener("change",calcWire);
-  ["wire-voltage","wire-load","wire-length","wire-drop","wire-margin"].forEach(id => $(id).addEventListener("input",calcWire));
-
-  const defaultDevices = [["Fridge",45,1,8,"dc"],["TV",70,1,4,"ac"],["Starlink",40,1,8,"dc"],["Laptop",65,1,3,"ac"]];
-  function addDevice(values=["",0,1,1,"dc"]){
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input class="d-name" value="${values[0]}"></td>
-      <td><input class="d-watts" type="number" min="0" step="1" value="${values[1]}"></td>
-      <td><input class="d-qty" type="number" min="1" step="1" value="${values[2]}"></td>
-      <td><input class="d-hours" type="number" min="0" max="24" step="0.1" value="${values[3]}"></td>
-      <td><select class="d-supply"><option value="dc"${values[4]==="dc"?" selected":""}>DC</option><option value="ac"${values[4]==="ac"?" selected":""}>AC</option></select></td>
-      <td class="d-wh">0</td>
-      <td><button class="remove" type="button" aria-label="Remove device">×</button></td>`;
-    tr.querySelectorAll("input,select").forEach(el => el.addEventListener("input",calcUsage));
-    tr.querySelector(".remove").addEventListener("click",() => { tr.remove(); calcUsage(); });
-    $("device-body").appendChild(tr);
-    calcUsage();
-  }
-  defaultDevices.forEach(addDevice);
-  $("add-device").addEventListener("click",() => addDevice());
-  ["usage-voltage","inverter-eff"].forEach(id => $(id).addEventListener("input",calcUsage));
-
-  function calcUsage(){
-    const voltage = +$("usage-voltage").value || 12.8;
-    const invEff = clamp(+$("inverter-eff").value || 90,50,100)/100;
-    let total = 0;
-    document.querySelectorAll("#device-body tr").forEach(tr => {
-      const watts = Math.max(0,+tr.querySelector(".d-watts").value || 0);
-      const qty = Math.max(0,+tr.querySelector(".d-qty").value || 0);
-      const hours = clamp(+tr.querySelector(".d-hours").value || 0,0,24);
-      const ac = tr.querySelector(".d-supply").value === "ac";
-      const wh = watts * qty * hours / (ac ? invEff : 1);
-      tr.querySelector(".d-wh").textContent = fmt(wh,0);
-      total += wh;
-    });
-    $("usage-wh").textContent = fmt(total,0) + " Wh";
-    $("usage-ah").textContent = fmt(total/voltage,1) + " Ah/day";
-    $("usage-average").textContent = fmt(total/24,1) + " W";
-    $("usage-month").textContent = fmt(total*30/1000,1) + " kWh";
-    $("battery-daily").value = Math.round(total);
-    $("solar-demand").value = Math.round(total);
-    calcBattery();
-    calcSolar();
-  }
-
-  function calcBattery(){
-    const daily = Math.max(0,+$("battery-daily").value || 0);
-    const V = +$("battery-voltage").value || 12.8;
-    const usableFraction = +$("battery-chem").value || 0.9;
-    const days = Math.max(0,+$("battery-days").value || 0);
-    const reserve = Math.max(0,+$("battery-reserve").value || 0)/100;
-    const usableTarget = daily * days;
-    const nominalWh = usableTarget * (1+reserve) / usableFraction;
-    const ah = nominalWh / V;
-    const rounded = Math.ceil(ah/25)*25;
-    $("battery-ah").textContent = fmt(ah,0) + " Ah";
-    $("battery-wh").textContent = fmt(nominalWh/1000,2) + " kWh";
-    $("battery-usable").textContent = fmt(usableTarget/1000,2) + " kWh";
-    $("battery-rounded").textContent = fmt(rounded,0) + " Ah";
-    $("battery-explain").innerHTML =
-      `You want ${fmt(daily,0)}Wh/day for ${fmt(days,2)} day(s), so the loads need ${fmt(usableTarget,0)}Wh of usable energy. ` +
-      `After ${fmt(reserve*100,0)}% reserve and the selected ${fmt(usableFraction*100,0)}% usable-capacity planning figure, that becomes about ` +
-      `<strong>${fmt(nominalWh,0)}Wh nominal</strong>, or <strong>${fmt(ah,0)}Ah at ${V}V</strong>. A practical shopping target is around <strong>${rounded}Ah</strong> or the next available size up.`;
-  }
-  ["battery-daily","battery-voltage","battery-chem","battery-days","battery-reserve"].forEach(id => $(id).addEventListener("input",calcBattery));
-
-  const midMonthDay = [15,46,74,105,135,166,196,227,258,288,319,349];
-  function deg2rad(d){ return d*Math.PI/180; }
-  function calcSolar(){
-    const watts = Math.max(0,+$("solar-watts").value || 0);
-    const lat = clamp(+$("solar-lat").value || 0,-66,66);
-    const month = clamp(parseInt($("solar-month").value || 1),1,12);
-    const climate = +$("solar-weather").value || .60;
-    const mount = $("solar-mount").value;
-    const eff = clamp(+$("solar-eff").value || 80,50,100)/100;
-    const demand = Math.max(0,+$("solar-demand").value || 0);
-
-    const n = midMonthDay[month-1];
-    const decl = 23.45 * Math.sin(deg2rad(360*(284+n)/365));
-    const phi = deg2rad(lat), delta = deg2rad(decl);
-    let cosH = -Math.tan(phi)*Math.tan(delta);
-    cosH = clamp(cosH,-1,1);
-    const H = Math.acos(cosH);
-    const dayLength = 24*H/Math.PI;
-    const noonAltitude = Math.max(0,90-Math.abs(lat-decl));
-    let base = dayLength * Math.sin(deg2rad(noonAltitude)) * 0.55;
-    if(mount === "tilt"){
-      const tiltGain = 1 + Math.min(.25, Math.abs(lat-decl)/90*.38);
-      base *= tiltGain;
-    }
-    const psh = Math.max(.15,base*climate);
-    const daily = watts * psh * eff;
-    const coverage = demand > 0 ? daily/demand*100 : 0;
-    const needed = demand > 0 ? demand/(psh*eff) : 0;
-
-    $("solar-daily").textContent = daily >= 1000 ? fmt(daily/1000,2)+" kWh" : fmt(daily,0)+" Wh";
-    $("solar-psh").textContent = fmt(psh,2) + " h/day";
-    $("solar-cover").textContent = demand > 0 ? fmt(coverage,0) + "%" : "—";
-    $("solar-needed").textContent = demand > 0 ? fmt(Math.ceil(needed/50)*50,0) + " W" : "—";
-    $("solar-explain").innerHTML =
-      `At latitude ${fmt(lat,2)}° in month ${month}, the model estimates about <strong>${fmt(dayLength,1)} hours of daylight</strong> and a solar-noon altitude around ${fmt(noonAltitude,1)}°. ` +
-      `After the selected climate and ${fmt(eff*100,0)}% system-efficiency assumptions, that is roughly <strong>${fmt(psh,2)} equivalent peak-sun-hours/day</strong>. ` +
-      `An ${fmt(watts,0)}W array therefore lands around <strong>${fmt(daily,0)}Wh/day</strong> on an average planning day under those assumptions.`;
-  }
-  ["solar-watts","solar-lat","solar-month","solar-weather","solar-mount","solar-eff","solar-demand"].forEach(id => $(id).addEventListener("input",calcSolar));
-
-  $("use-location").addEventListener("click",() => {
-    const status = $("location-status");
-    if(!navigator.geolocation){ status.textContent = "Geolocation is not supported by this browser."; return; }
-    status.textContent = "Waiting for location permission…";
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        $("solar-lat").value = pos.coords.latitude.toFixed(4);
-        status.textContent = "Latitude filled from your current location.";
-        calcSolar();
-      },
-      () => status.textContent = "Location was unavailable or permission was denied.",
-      {enableHighAccuracy:false,timeout:10000,maximumAge:600000}
-    );
-  });
-
-  calcWire();
-  calcUsage();
-  calcBattery();
-  calcSolar();
+(()=>{
+const $=id=>document.getElementById(id), clamp=(v,a,b)=>Math.min(b,Math.max(a,v)), fmt=(n,d=1)=>Number.isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:d}):"—";
+const cables=[{mm:.5,awg:"20",amp:5},{mm:.75,awg:"18",amp:8},{mm:1,awg:"17",amp:10},{mm:1.5,awg:"15",amp:15},{mm:2.5,awg:"13",amp:20},{mm:4,awg:"11",amp:30},{mm:6,awg:"9",amp:40},{mm:10,awg:"7",amp:60},{mm:16,awg:"5",amp:85},{mm:25,awg:"3",amp:110},{mm:35,awg:"2",amp:135},{mm:50,awg:"1/0",amp:170},{mm:70,awg:"2/0",amp:210},{mm:95,awg:"3/0",amp:250},{mm:120,awg:"4/0",amp:300}];
+const fuses=[2,3,5,7.5,10,15,20,25,30,40,50,60,70,80,100,125,150,175,200,225,250,300]; const nextFuse=v=>fuses.find(x=>x>=v)??null;
+function calcWire(){const V=+$('wire-voltage').value,mode=$('wire-mode').value,load=Math.max(0,+$('wire-load').value),L=Math.max(0,+$('wire-length').value),pct=+$('wire-drop').value,margin=+$('wire-margin').value;$('wire-load-unit').textContent=mode==='amps'?'Amps':'Watts';if(!V||!load||!L)return;const I=mode==='amps'?load:load/V,rt=L*2,maxV=V*pct/100,rho=.0175,req=rho*rt*I/maxV,needFuse=I*margin;let c=cables.find(x=>x.mm>=req&&x.amp>=needFuse)||cables.at(-1);const drop=I*rho*rt/c.mm,dropPct=drop/V*100,loss=I*drop,f=nextFuse(needFuse);$('wire-size').textContent=c.mm+' mm²';$('wire-awg').textContent='AWG '+c.awg;$('wire-drop-result').textContent=fmt(drop,2)+' V / '+fmt(dropPct,2)+'%';$('wire-fuse').textContent=f&&f<=c.amp?f+' A':'Increase cable';$('wire-explain').innerHTML=`${fmt(I,1)}A over ${fmt(L,1)}m one-way means ${fmt(rt,1)}m of conductor. The voltage-drop calculation needs at least <strong>${fmt(req,2)}mm²</strong>; stepping to ${c.mm}mm² gives about ${fmt(dropPct,2)}% drop and ${fmt(loss,1)}W cable loss.`}
+['wire-voltage','wire-mode','wire-load','wire-length','wire-drop','wire-margin'].forEach(id=>$(id).addEventListener('input',calcWire));
+const defaults=[["Fridge",45,1,8,"dc"],["TV",70,1,4,"ac"],["Starlink",40,1,8,"dc"],["Laptop",65,1,3,"ac"]];
+function addDevice(v=["",0,1,1,"dc"]){const tr=document.createElement('tr');tr.innerHTML=`<td><input class="d-name" value="${v[0]}"></td><td><input class="d-watts" type="number" min="0" value="${v[1]}"></td><td><input class="d-qty" type="number" min="1" value="${v[2]}"></td><td><input class="d-hours" type="number" min="0" max="24" step="0.1" value="${v[3]}"></td><td><select class="d-supply"><option value="dc"${v[4]==='dc'?' selected':''}>DC</option><option value="ac"${v[4]==='ac'?' selected':''}>AC</option></select></td><td class="d-wh">0</td><td><button class="remove" type="button">×</button></td>`;tr.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calcUsage));tr.querySelector('.remove').addEventListener('click',()=>{tr.remove();calcUsage()});$('device-body').appendChild(tr)}; defaults.forEach(addDevice);$('add-device').addEventListener('click',()=>addDevice());
+function calcUsage(){const V=+$('usage-system-voltage').value||12,eff=clamp(+$('inverter-eff').value||90,50,100)/100;let total=0;document.querySelectorAll('#device-body tr').forEach(tr=>{const w=Math.max(0,+tr.querySelector('.d-watts').value||0),q=Math.max(0,+tr.querySelector('.d-qty').value||0),h=clamp(+tr.querySelector('.d-hours').value||0,0,24),ac=tr.querySelector('.d-supply').value==='ac',wh=w*q*h/(ac?eff:1);tr.querySelector('.d-wh').textContent=fmt(wh,0);total+=wh});$('usage-wh').textContent=fmt(total,0)+' Wh';$('usage-ah').textContent=fmt(total/V,1)+' Ah/day';$('usage-average').textContent=fmt(total/24,1)+' W';$('usage-month').textContent=fmt(total*30/1000,1)+' kWh';$('battery-daily').value=Math.round(total);$('solar-demand').value=Math.round(total);calcBattery();calcSolar()};['usage-system-voltage','inverter-eff'].forEach(id=>$(id).addEventListener('input',calcUsage));
+function systemV(){return $('battery-system-voltage').value==='custom'?Math.max(.1,+$('battery-custom-system').value||0):+$('battery-system-voltage').value} function usableFrac(){return $('battery-chem').value==='custom'?clamp(+$('battery-custom-usable').value||80,10,100)/100:+$('battery-chem').value}
+function calcBattery(){const daily=Math.max(0,+$('battery-daily').value||0),V=systemV(),usable=usableFrac(),days=Math.max(0,+$('battery-days').value||0),reserve=Math.max(0,+$('battery-reserve').value||0)/100,target=daily*days,nom=target*(1+reserve)/usable,ah=nom/V,round=Math.ceil(ah/25)*25;$('battery-ah').textContent=fmt(ah,0)+' Ah';$('battery-wh').textContent=fmt(nom/1000,2)+' kWh';$('battery-usable').textContent=fmt(target/1000,2)+' kWh';$('battery-rounded').textContent=fmt(round,0)+' Ah';$('battery-explain').innerHTML=`At ${fmt(V,1)}V with a ${fmt(usable*100,0)}% usable-capacity assumption, ${fmt(daily,0)}Wh/day for ${fmt(days,2)} day(s) plus ${fmt(reserve*100,0)}% reserve needs about <strong>${fmt(ah,0)}Ah nominal</strong>.`;calcBank()}
+function calcBank(){const uv=Math.max(.1,+$('unit-voltage').value||0),uah=Math.max(.1,+$('unit-ah').value||0),s=clamp(parseInt($('series-count').value||1),1,8),p=clamp(parseInt($('parallel-count').value||1),1,8),V=uv*s,Ah=uah*p,count=s*p;$('bank-voltage').textContent=fmt(V,1)+' V';$('bank-ah').textContent=fmt(Ah,0)+' Ah';$('bank-kwh').textContent=fmt(V*Ah/1000,2)+' kWh';$('bank-count').textContent=count;let html='<div class="parallel-wrap">';for(let j=0;j<p;j++){html+='<div class="parallel-string"><div class="diagram-row">';for(let i=0;i<s;i++){html+=`<div class="battery-block">${fmt(uv,1)}V<br>${fmt(uah,0)}Ah</div>`+(i<s-1?'<span class="connector">—</span>':'')}html+='</div></div>'}html+='</div><div class="diagram-caption">Series raises voltage. Parallel raises Ah. This layout gives '+fmt(V,1)+'V / '+fmt(Ah,0)+'Ah from '+count+' physical batteries.</div>';$('battery-diagram').innerHTML=html}
+['battery-system-voltage','battery-custom-system','battery-chem','battery-custom-usable','battery-daily','battery-days','battery-reserve'].forEach(id=>$(id).addEventListener('input',()=>{ $('custom-system-wrap').style.display=$('battery-system-voltage').value==='custom'?'flex':'none';$('custom-usable-wrap').style.display=$('battery-chem').value==='custom'?'flex':'none';calcBattery()}));['unit-voltage','unit-ah','series-count','parallel-count'].forEach(id=>$(id).addEventListener('input',calcBank));
+const controllers=[
+{b:'Victron',m:'SmartSolar 100/30',voc:100,a:30,bv:[12,24],pv:{12:440,24:880},isc:35},{b:'Victron',m:'SmartSolar 100/50',voc:100,a:50,bv:[12,24],pv:{12:700,24:1400},isc:60},{b:'Victron',m:'SmartSolar 150/35',voc:150,a:35,bv:[12,24,36,48],pv:{12:500,24:1000,36:1500,48:2000},isc:35},{b:'Victron',m:'SmartSolar 150/45',voc:150,a:45,bv:[12,24,36,48],pv:{12:650,24:1300,36:1950,48:2600},isc:45},{b:'Victron',m:'SmartSolar 150/60',voc:150,a:60,bv:[12,24,36,48],pv:{12:860,24:1720,36:2580,48:3440},isc:50},{b:'Victron',m:'SmartSolar 150/70',voc:150,a:70,bv:[12,24,36,48],pv:{12:1000,24:2000,36:3000,48:4000},isc:50},{b:'Victron',m:'SmartSolar 150/85',voc:150,a:85,bv:[12,24,36,48],pv:{12:1200,24:2400,36:3600,48:4900},isc:70},{b:'Victron',m:'SmartSolar 150/100',voc:150,a:100,bv:[12,24,36,48],pv:{12:1450,24:2900,36:4350,48:5800},isc:70},
+{b:'Renogy',m:'Rover 20A',voc:95,a:20,bv:[12,24],pv:{12:260,24:520}},{b:'Renogy',m:'Rover 40A',voc:100,a:40,bv:[12,24],pv:{12:520,24:1040}},{b:'Renogy',m:'Rover 60A',voc:140,a:60,bv:[12,24,36,48],pv:{12:800,24:1600,36:2400,48:3200}},{b:'Renogy',m:'Rover 100A',voc:150,a:100,bv:[12,24,36,48],pv:{12:1300,24:2600,36:3900,48:5200}},
+{b:'EPEVER',m:'XTRA 1210N',voc:100,a:10,bv:[12,24],pv:{12:130,24:260}},{b:'EPEVER',m:'XTRA 2210N',voc:100,a:20,bv:[12,24],pv:{12:260,24:520}},{b:'EPEVER',m:'XTRA 3210N',voc:100,a:30,bv:[12,24],pv:{12:390,24:780}},{b:'EPEVER',m:'XTRA 4210N',voc:100,a:40,bv:[12,24],pv:{12:520,24:1040}},{b:'EPEVER',m:'Tracer 6415AN',voc:150,a:60,bv:[12,24,36,48]},{b:'EPEVER',m:'Tracer 8415AN',voc:150,a:80,bv:[12,24,36,48]},{b:'EPEVER',m:'Tracer 10415AN',voc:150,a:100,bv:[12,24,36,48]},{b:'EPEVER',m:'Tracer 6420AN',voc:200,a:60,bv:[12,24,36,48]},
+{b:'Morningstar',m:'TriStar MPPT 30',voc:150,a:30,bv:[12,24,36,48],pv:{12:400,24:800,48:1600}},{b:'Morningstar',m:'TriStar MPPT 45',voc:150,a:45,bv:[12,24,36,48],pv:{12:600,24:1200,48:2400}},{b:'Morningstar',m:'TriStar MPPT 60',voc:150,a:60,bv:[12,24,36,48],pv:{12:800,24:1600,48:3200}},{b:'Morningstar',m:'GenStar MPPT 60',voc:200,a:60,bv:[12,24,48],pv:{12:800,24:1600,48:3200}},{b:'Morningstar',m:'GenStar MPPT 80',voc:200,a:80,bv:[12,24,48],pv:{12:1064,24:2128,48:4256}},{b:'Morningstar',m:'GenStar MPPT 100',voc:200,a:100,bv:[12,24,48],pv:{12:1330,24:2660,48:5320}},
+{b:'Votronic',m:'MPP 165 Duo Digital',voc:50,a:12,bv:[12],pv:{12:165}},{b:'Votronic',m:'MPP 250 Duo Digital',voc:50,a:18,bv:[12],pv:{12:250}},{b:'Votronic',m:'MPP 350 Duo Digital',voc:50,a:25.5,bv:[12],pv:{12:350}},{b:'Votronic',m:'MPP 430 Duo Digital',voc:50,a:31.5,bv:[12],pv:{12:430}},
+{b:'OutBack',m:'FLEXmax 60',voc:150,a:60,bv:[12,24,36,48,60],pv:{12:750,24:1500,36:2250,48:3000,60:3750}},{b:'OutBack',m:'FLEXmax 80',voc:150,a:80,bv:[12,24,36,48,60],pv:{12:1000,24:2000,36:3000,48:4000,60:5000}},
+{b:'MidNite Solar',m:'Classic 150',voc:150,a:96,bv:[12,24,48,72]},{b:'MidNite Solar',m:'Classic 200',voc:200,a:79,bv:[12,24,48,72]},{b:'MidNite Solar',m:'Classic 250',voc:250,a:63,bv:[12,24,48,72]}
+];
+function coldVoc(voc,coef,temp){const delta=temp-25;return voc*(1+(coef/100)*delta)}
+function calcArray(){const W=+$('panel-watts').value||0,Voc=+$('panel-voc').value||0,Vmp=+$('panel-vmp').value||0,Isc=+$('panel-isc').value||0,Imp=+$('panel-imp').value||0,coef=+$('panel-voc-temp').value||0,temp=+$('cold-temp').value||25,s=Math.max(1,parseInt($('panels-series').value||1)),p=Math.max(1,parseInt($('parallel-strings').value||1)),count=s*p,arrayW=W*count,arrayVoc=Voc*s,arrayCold=coldVoc(Voc,coef,temp)*s,arrayVmp=Vmp*s,arrayIsc=Isc*p,arrayImp=Imp*p;$('array-watts').textContent=fmt(arrayW,0)+' W';$('array-voc').textContent=fmt(arrayVoc,1)+' / '+fmt(arrayCold,1)+' V';$('array-vmp').textContent=fmt(arrayVmp,1)+' V';$('array-current').textContent=fmt(arrayIsc,1)+' / '+fmt(arrayImp,1)+' A';$('solar-watts').value=Math.round(arrayW);let html='<div class="parallel-wrap">';for(let j=0;j<p;j++){html+='<div class="parallel-string"><div class="diagram-row">';for(let i=0;i<s;i++){html+=`<div class="panel-block">${fmt(W,0)}W<br>${fmt(Voc,1)}V Voc</div>`+(i<s-1?'<span class="connector">—</span>':'')}html+='</div></div>'}html+='</div><div class="diagram-caption">'+s+' in series × '+p+' parallel string(s) = '+count+' panels, '+fmt(arrayW,0)+'W. Series raises voltage; parallel raises current.</div>';$('panel-diagram').innerHTML=html;$('array-explain').innerHTML=`STC array Voc is ${fmt(arrayVoc,1)}V. With ${fmt(coef,2)}%/°C Voc coefficient and ${fmt(temp,0)}°C minimum panel temperature, cold-corrected Voc is approximately <strong>${fmt(arrayCold,1)}V</strong>. Use that cold figure when checking controller voltage limits.`;renderControllers({arrayW,arrayCold,arrayIsc})}
+function renderControllers(x){const brand=$('brand-filter').value,bv=+$('controller-battery-voltage').value,list=$('controller-list');list.innerHTML='';const arr=controllers.filter(c=>brand==='all'||c.b===brand).map(c=>{const batteryOK=c.bv.includes(bv),vocOK=x.arrayCold<c.voc,head=(c.voc-x.arrayCold)/c.voc*100,pvLimit=c.pv?.[bv],powerOK=pvLimit?x.arrayW<=pvLimit:true,iscOK=c.isc?x.arrayIsc<=c.isc:true;let status='fit',reason='Compatible on the checks in this dataset';if(!batteryOK||!vocOK||!iscOK){status='no';reason=!batteryOK?'Battery voltage not supported':!vocOK?'Cold Voc exceeds max PV voltage':'Array Isc exceeds published PV short-circuit limit'}else if(head<10||!powerOK||!c.isc||!pvLimit){status='maybe';reason=head<10?'Less than 10% Voc headroom':!powerOK?'Array power exceeds published nominal/max PV power':'Some PV input limits need datasheet verification'}return {...c,status,reason,pvLimit}}).sort((a,b)=>({fit:0,maybe:1,no:2}[a.status]-({fit:0,maybe:1,no:2}[b.status])||a.voc-b.voc||a.a-b.a);arr.forEach(c=>{const d=document.createElement('div');d.className='controller-item '+c.status;d.innerHTML=`<div><div class="controller-name">${c.b} ${c.m}</div><div class="controller-meta">${c.reason}</div></div><div><div class="controller-meta">Max PV Voc</div><strong>${c.voc}V</strong></div><div><div class="controller-meta">Charge current</div><strong>${c.a}A</strong></div><div><div class="controller-meta">PV power @ ${bv}V</div><strong>${c.pvLimit?c.pvLimit+'W':'Check manual'}</strong></div><div class="controller-status ${c.status}">${c.status==='fit'?'Good match':c.status==='maybe'?'Check details':'Not suitable'}</div>`;list.appendChild(d)})}
+['panel-watts','panel-voc','panel-vmp','panel-isc','panel-imp','panel-voc-temp','cold-temp','panels-series','parallel-strings','controller-battery-voltage'].forEach(id=>$(id).addEventListener('input',calcArray));$('brand-filter').addEventListener('change',calcArray);
+const md=[15,46,74,105,135,166,196,227,258,288,319,349],rad=d=>d*Math.PI/180;function calcSolar(){const watts=Math.max(0,+$('solar-watts').value||0),lat=clamp(+$('solar-lat').value||0,-66,66),m=clamp(parseInt($('solar-month').value||1),1,12),clim=+$('solar-weather').value||.6,mount=$('solar-mount').value,eff=clamp(+$('solar-eff').value||80,50,100)/100,demand=Math.max(0,+$('solar-demand').value||0),n=md[m-1],decl=23.45*Math.sin(rad(360*(284+n)/365)),phi=rad(lat),delta=rad(decl);let cosH=clamp(-Math.tan(phi)*Math.tan(delta),-1,1),H=Math.acos(cosH),day=24*H/Math.PI,noon=Math.max(0,90-Math.abs(lat-decl)),base=day*Math.sin(rad(noon))*.55;if(mount==='tilt')base*=1+Math.min(.25,Math.abs(lat-decl)/90*.38);const psh=Math.max(.15,base*clim),daily=watts*psh*eff,cov=demand?daily/demand*100:0,need=demand?demand/(psh*eff):0;$('solar-daily').textContent=daily>=1000?fmt(daily/1000,2)+' kWh':fmt(daily,0)+' Wh';$('solar-psh').textContent=fmt(psh,2)+' h/day';$('solar-cover').textContent=demand?fmt(cov,0)+'%':'—';$('solar-needed').textContent=demand?fmt(Math.ceil(need/50)*50,0)+' W':'—';$('solar-explain').innerHTML=`Broad geometry/climate estimate: about ${fmt(day,1)} daylight hours, ${fmt(noon,1)}° solar-noon altitude and <strong>${fmt(psh,2)} equivalent peak-sun-hours/day</strong> under the selected climate assumption.`}
+['solar-watts','solar-lat','solar-month','solar-weather','solar-mount','solar-eff','solar-demand'].forEach(id=>$(id).addEventListener('input',calcSolar));
+calcWire();calcUsage();calcBattery();calcBank();calcArray();calcSolar();
 })();
 </script>
-</body>
-</html>
+</body></html>
