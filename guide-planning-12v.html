@@ -46,79 +46,96 @@
           <p><strong>AC</strong> means alternating current. UK household sockets supply AC. A van uses an <strong>inverter</strong> to turn battery DC into mains-style AC. That conversion wastes some energy, so a 500W AC appliance takes more than 500W from the battery side.</p>
           <p><strong>PV</strong> means photovoltaic—the solar-panel side of the system. <strong>MPPT</strong> means Maximum Power Point Tracking, the method used by a solar charge controller to obtain useful power from the panels and turn it into controlled battery charging.</p>
 
-          <h2>The whole system, wired as a circuit</h2>
-          <p>Every line below lands on a labelled terminal. Red is positive, grey is negative, and blue is the solar-panel side. A fuse is placed in the positive cable near the source of the fault current it is protecting against.</p>
-          <div class="circuit-card">
-            <svg class="circuit-svg circuit-large" viewBox="0 0 1200 650" role="img" aria-labelledby="system-title system-desc">
-              <title id="system-title">Complete basic 12 volt campervan circuit</title>
-              <desc id="system-desc">A solar panel connects through MC4 connectors and a solar isolator to an MPPT charge controller. The controller connects through a fuse to positive and negative busbars. The battery connects through a main fuse and master isolator to the positive busbar, and through a shunt to the negative busbar. A fused distribution board supplies a light and fridge, with all negative returns connected to the negative busbar.</desc>
-              <g class="wire wire-blue">
-                <path d="M160 95 H260"/><path d="M300 95 H375"/><path d="M425 95 H500"/>
-                <path d="M160 155 H260"/><path d="M300 155 H375"/><path d="M425 155 H500"/>
-              </g>
+          <h2 id="system-layout">A realistic small-system layout</h2>
+          <p>This installation-style view shows the equipment as it might be arranged on a board. Every conductor lands on a stud, terminal or connector. The light and fridge have separate positive fuses and separate negative returns.</p>
+          <div class="circuit-card installation-card">
+            <svg class="circuit-svg circuit-large installation-board" viewBox="0 0 1400 850" role="img" aria-labelledby="system-title system-desc">
+              <title id="system-title">Installation-style 12 volt campervan electrical layout</title>
+              <desc id="system-desc">A solar panel connects through MC4 connectors and a double-pole isolator to an MPPT controller. The battery positive passes through a main fuse and switch to a positive busbar. The battery negative has one cable only, leading first to the battery-minus side of a shunt. The shunt system-minus side connects to the negative busbar. The MPPT, light and fridge all return to that negative busbar. The light and fridge each have their own fuse in the fuse block.</desc>
+              <rect class="mounting-board" x="20" y="20" width="1360" height="800" rx="24"/>
+              <circle class="board-screw" cx="48" cy="48" r="7"/><circle class="board-screw" cx="1352" cy="48" r="7"/><circle class="board-screw" cx="48" cy="792" r="7"/><circle class="board-screw" cx="1352" cy="792" r="7"/>
+
+              <g class="wire wire-blue"><path d="M230 105 H290"/><path d="M330 105 H380"/><path d="M420 105 H470"/><path d="M230 175 H290"/><path d="M330 175 H380"/><path d="M420 175 H470"/></g>
               <g class="wire wire-red">
-                <path d="M590 185 V250 H700"/><path d="M760 250 V260"/>
-                <path d="M440 440 H500"/><path d="M555 440 H620"/><path d="M670 440 H760 V300"/>
-                <path d="M760 280 H845"/><path d="M905 280 H970"/><path d="M1010 280 H1080 V230"/>
-                <path d="M1010 280 H1080 V360"/>
+                <path d="M570 300 V350 H655"/><path d="M715 350 H730 V500"/>
+                <path d="M345 620 H400"/><path d="M465 620 H520"/><path d="M580 620 H730"/>
+                <path d="M730 535 H900 V500"/><path d="M1060 465 H1185"/><path d="M1060 555 H1140 V580 H1185"/>
               </g>
               <g class="wire wire-black">
-                <path d="M590 255 V330 H730"/>
-                <path d="M440 500 H500"/><path d="M580 500 H760 V370"/>
-                <path d="M790 350 H1080 V265"/><path d="M1080 405 V350"/>
+                <path d="M570 330 V680 H800"/>
+                <path d="M345 710 H400"/><path d="M650 735 H800"/>
+                <path d="M1185 515 H850 V720 H800"/><path d="M1185 630 H875 V760 H800"/>
               </g>
 
-              <g class="component solar-panel">
-                <rect x="40" y="55" width="120" height="140" rx="8"/>
-                <path d="M58 165 H142 M68 145 H132 M78 125 H122 M88 105 H112 M70 75 L130 175 M100 65 V185"/>
-                <circle class="terminal negative" cx="160" cy="155" r="7"/><circle class="terminal positive" cx="160" cy="95" r="7"/>
-                <text x="100" y="35">solar panel</text><text x="140" y="88">+</text><text x="140" y="178">−</text>
+              <g class="real-device solar-panel">
+                <rect x="55" y="65" width="175" height="155" rx="8"/><path d="M72 195 H213 M82 165 H203 M92 135 H193 M102 105 H183 M90 78 L198 205 M142 75 V210"/>
+                <circle class="terminal positive" cx="230" cy="105" r="8"/><circle class="terminal negative" cx="230" cy="175" r="8"/>
+                <text x="142" y="48">ROOF SOLAR PANEL</text><text x="208" y="98">+</text><text x="208" y="198">−</text>
               </g>
-              <g class="connector-symbol">
-                <rect x="260" y="80" width="40" height="30" rx="5"/><rect x="260" y="140" width="40" height="30" rx="5"/>
-                <text x="280" y="73">MC4 pair</text>
+              <g class="connector-symbol"><rect x="290" y="89" width="40" height="32" rx="5"/><rect x="290" y="159" width="40" height="32" rx="5"/><text x="310" y="72">MC4</text></g>
+              <g class="pv-isolator real-device">
+                <rect x="380" y="72" width="40" height="136" rx="6"/><circle cx="400" cy="105" r="8"/><circle cx="400" cy="175" r="8"/><path d="M390 105 L410 90 M390 175 L410 160"/><text x="400" y="232">PV ISOLATOR</text>
               </g>
-              <g class="switch-symbol">
-                <circle cx="375" cy="95" r="6"/><circle cx="425" cy="95" r="6"/><path d="M379 91 L416 72"/>
-                <circle cx="375" cy="155" r="6"/><circle cx="425" cy="155" r="6"/><path d="M379 151 L416 132"/>
-                <text x="400" y="188">double-pole PV isolator</text>
+              <g class="real-device mppt-device">
+                <rect x="470" y="55" width="210" height="275" rx="12"/><rect x="492" y="82" width="166" height="128" rx="6"/>
+                <path d="M505 100 H645 M505 120 H645 M505 140 H645 M505 160 H645 M505 180 H645"/>
+                <text x="575" y="238">MPPT SOLAR CHARGER</text><text x="575" y="260">PV input → battery charging</text>
+                <circle class="terminal positive" cx="470" cy="105" r="8"/><circle class="terminal negative" cx="470" cy="175" r="8"/>
+                <circle class="terminal positive" cx="570" cy="300" r="8"/><circle class="terminal negative" cx="570" cy="330" r="8"/>
+                <text x="495" y="99">PV+</text><text x="495" y="198">PV−</text><text x="600" y="306">BAT+</text><text x="600" y="336">BAT−</text>
               </g>
-              <g class="component controller">
-                <rect x="500" y="60" width="180" height="195" rx="10"/>
-                <text x="590" y="95">MPPT solar charger</text><text x="590" y="118">turns panel power into</text><text x="590" y="138">controlled battery charging</text>
-                <circle class="terminal positive" cx="500" cy="95" r="7"/><circle class="terminal negative" cx="500" cy="155" r="7"/>
-                <circle class="terminal positive" cx="590" cy="185" r="7"/><circle class="terminal negative" cx="590" cy="255" r="7"/>
-                <text x="523" y="87">PV+</text><text x="523" y="177">PV−</text><text x="615" y="180">BAT+</text><text x="617" y="250">BAT−</text>
+              <g class="fuse-holder real-device"><rect x="655" y="330" width="60" height="40" rx="6"/><rect x="670" y="339" width="30" height="22" rx="3"/><text x="685" y="315">MPPT FUSE</text></g>
+
+              <g class="real-device battery-real">
+                <rect x="75" y="540" width="270" height="225" rx="16"/><rect x="100" y="570" width="220" height="150" rx="8"/>
+                <text x="210" y="595">12V LEISURE BATTERY</text><text x="210" y="675">stores the energy</text>
+                <circle class="terminal positive" cx="345" cy="620" r="10"/><circle class="terminal negative" cx="345" cy="710" r="10"/><text x="318" y="612">+</text><text x="318" y="735">−</text>
               </g>
-              <g class="fuse-symbol">
-                <rect x="700" y="238" width="60" height="24" rx="4"/><path d="M710 250 H750"/><text x="730" y="225">charger fuse</text>
+              <g class="fuse-holder real-device"><rect x="400" y="598" width="65" height="44" rx="6"/><rect x="415" y="607" width="35" height="26" rx="3"/><text x="432" y="580">MAIN FUSE</text></g>
+              <g class="battery-switch real-device"><circle cx="550" cy="620" r="30"/><path d="M535 630 L565 610"/><circle class="terminal positive" cx="520" cy="620" r="8"/><circle class="terminal positive" cx="580" cy="620" r="8"/><text x="550" y="575">MASTER SWITCH</text></g>
+
+              <g class="real-device positive-bus">
+                <rect x="700" y="470" width="60" height="190" rx="10"/><rect x="720" y="488" width="20" height="154" rx="5"/>
+                <circle class="terminal positive" cx="730" cy="500" r="8"/><circle class="terminal positive" cx="730" cy="535" r="8"/><circle class="terminal positive" cx="730" cy="620" r="8"/>
+                <text x="730" y="450">POSITIVE BUSBAR</text>
               </g>
-              <g class="component bus">
-                <rect x="730" y="260" width="60" height="40" rx="6"/><text x="760" y="285">+ bus</text>
-                <rect x="730" y="330" width="60" height="40" rx="6"/><text x="760" y="355">− bus</text>
+              <g class="real-device negative-bus">
+                <rect x="770" y="650" width="60" height="140" rx="10"/><rect x="790" y="667" width="20" height="105" rx="5"/>
+                <circle class="terminal negative" cx="800" cy="680" r="8"/><circle class="terminal negative" cx="800" cy="720" r="8"/><circle class="terminal negative" cx="800" cy="760" r="8"/>
+                <text x="800" y="632">NEGATIVE BUSBAR</text>
               </g>
-              <g class="component battery">
-                <rect x="300" y="400" width="140" height="140" rx="10"/>
-                <line x1="335" y1="430" x2="335" y2="510"/><line x1="395" y1="445" x2="395" y2="495"/>
-                <circle class="terminal positive" cx="440" cy="440" r="7"/><circle class="terminal negative" cx="440" cy="500" r="7"/>
-                <text x="370" y="385">12V leisure battery</text><text x="370" y="475">stores energy</text><text x="420" y="432">+</text><text x="420" y="523">−</text>
+              <g class="real-device smart-shunt">
+                <rect x="400" y="690" width="250" height="90" rx="10"/><rect x="448" y="718" width="155" height="34" rx="5"/>
+                <circle class="terminal negative" cx="400" cy="735" r="11"/><circle class="terminal negative" cx="650" cy="735" r="11"/>
+                <text x="525" y="710">BATTERY MONITOR SHUNT</text><text x="425" y="808">BATTERY MINUS</text><text x="625" y="808">SYSTEM MINUS</text>
               </g>
-              <g class="fuse-symbol"><rect x="500" y="428" width="55" height="24" rx="4"/><path d="M510 440 H545"/><text x="528" y="414">main fuse</text></g>
-              <g class="switch-symbol"><circle cx="620" cy="440" r="6"/><circle cx="670" cy="440" r="6"/><path d="M624 436 L662 417"/><text x="645" y="405">master isolator</text></g>
-              <g class="component shunt"><rect x="500" y="480" width="80" height="40" rx="6"/><text x="540" y="505">shunt</text><text x="540" y="544">measures all battery current</text></g>
-              <g class="component distribution"><rect x="845" y="250" width="60" height="60" rx="6"/><text x="875" y="276">fuse</text><text x="875" y="296">board</text></g>
-              <g class="fuse-symbol"><rect x="970" y="268" width="40" height="24" rx="4"/><path d="M978 280 H1002"/><text x="990" y="255">branch fuse</text></g>
-              <g class="component load">
-                <circle cx="1080" cy="230" r="35"/><path d="M1057 207 L1103 253 M1103 207 L1057 253"/><text x="1140" y="235">light</text>
-                <rect x="1045" y="360" width="70" height="45" rx="5"/><text x="1080" y="388">fridge</text>
+
+              <g class="real-device fuse-block">
+                <rect x="900" y="405" width="160" height="210" rx="12"/><rect x="920" y="430" width="120" height="160" rx="8"/>
+                <path d="M920 500 H940 V465 H960 M920 500 V555 H960"/>
+                <rect class="blade-fuse" x="960" y="450" width="42" height="30" rx="4"/><rect class="blade-fuse" x="960" y="540" width="42" height="30" rx="4"/>
+                <path d="M1002 465 H1060 M1002 555 H1060"/>
+                <circle class="terminal positive" cx="900" cy="500" r="8"/><circle class="terminal positive" cx="1060" cy="465" r="8"/><circle class="terminal positive" cx="1060" cy="555" r="8"/>
+                <text x="980" y="393">12V BLADE FUSE BLOCK</text><text x="980" y="448">F1 · lights</text><text x="980" y="535">F2 · fridge</text>
               </g>
-              <g class="junctions"><circle cx="1080" cy="280" r="6"/><circle cx="1080" cy="350" r="6"/></g>
-              <text class="diagram-label blue-label" x="325" y="45">PV side: panel voltage</text>
-              <text class="diagram-label red-label" x="615" y="470">battery positive path</text>
-              <text class="diagram-label black-label" x="835" y="385">negative return path</text>
+              <g class="real-device light-real">
+                <circle cx="1240" cy="490" r="42"/><path d="M1212 462 L1268 518 M1268 462 L1212 518"/>
+                <circle class="terminal positive" cx="1185" cy="465" r="8"/><circle class="terminal negative" cx="1185" cy="515" r="8"/>
+                <path d="M1185 465 H1203 M1185 515 H1203"/><text x="1310" y="496">LIGHT CIRCUIT</text>
+              </g>
+              <g class="real-device fridge-real">
+                <rect x="1215" y="550" width="110" height="105" rx="8"/><line x1="1215" y1="585" x2="1325" y2="585"/><circle cx="1307" cy="568" r="4"/>
+                <circle class="terminal positive" cx="1185" cy="580" r="8"/><circle class="terminal negative" cx="1185" cy="630" r="8"/>
+                <path d="M1185 580 H1215 M1185 630 H1215"/><text x="1270" y="680">FRIDGE CIRCUIT</text>
+              </g>
+
+              <text class="diagram-label red-label" x="515" y="650">only protected positive connections</text>
+              <text class="diagram-label black-label" x="520" y="832">the battery − has one connection only: straight to BATTERY MINUS</text>
             </svg>
-            <p class="diagram-caption"><strong>Reading the drawing:</strong> each circle is a terminal or junction. A line never stops in mid-air: it finishes on another terminal, a connector or a junction. Your actual system may also include alternator charging, mains charging and an inverter.</p>
+            <div class="diagram-key"><span><i class="key-red"></i>Positive</span><span><i class="key-grey"></i>Negative</span><span><i class="key-blue"></i>Solar-panel side</span></div>
+            <p class="diagram-caption"><strong>Separate circuits:</strong> the light leaves fuse F1; the fridge leaves fuse F2. Each appliance has its own negative return to the negative busbar. Cable and fuse ratings are deliberately omitted because they must be calculated for the actual equipment and cable lengths.</p>
           </div>
+          <div class="visual-references"><strong>Compare it with real equipment</strong><a href="https://www.victronenergy.com/media/pg/SmartShunt/en/installation.html" target="_blank" rel="noopener">SmartShunt photographs and official connection drawing →</a><a href="https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/dc-wiring.html" target="_blank" rel="noopener">Photographs of busbars, fuses, cable ends and MC4 connectors →</a></div>
 
           <h2>What each part does</h2>
           <div class="parts-list">
@@ -126,11 +143,23 @@
             <div><h3>Busbar</h3><p>A solid common connection point. A positive busbar distributes the supply; a negative busbar gathers the return cables.</p></div>
             <div><h3>Fuse</h3><p>Protects the cable from overheating if too much current flows. The fuse rating must suit the cable and the expected load. A fuse is not an on/off switch.</p></div>
             <div><h3>Isolator</h3><p>A switch intended to disconnect part of the system for maintenance or an emergency. It does not replace a fuse.</p></div>
-            <div><h3>Shunt</h3><p>A calibrated measuring point in the battery-negative cable. A battery monitor uses the tiny voltage drop across it to calculate current and estimate battery state of charge.</p></div>
+            <div><h3>Shunt</h3><p>A calibrated measuring point in the battery-negative cable. It must be the first component after battery negative so every amp entering or leaving the battery passes through it.</p></div>
             <div><h3>MPPT solar charger</h3><p>Maximum Power Point Tracking. It finds the panel's useful operating point and converts that power into the correct charging voltage and current for the battery.</p></div>
             <div><h3>BMS</h3><p>Battery Management System. In a lithium battery it monitors cells and can disconnect charging or loads if voltage, current or temperature moves outside its limits.</p></div>
             <div><h3>Inverter</h3><p>Turns battery DC into mains-style AC. Large inverters draw very high current from a 12V battery and need short, heavy cables and suitable protection.</p></div>
           </div>
+
+          <h2>The shunt's non-negotiable rule</h2>
+          <p>A shunt measures current in both directions: discharge current when equipment is running and charge current when solar, alternator or mains charging is active. The battery monitor uses those measurements over time to calculate <strong>SOC</strong>—state of charge.</p>
+          <div class="shunt-rule">
+            <div class="shunt-side battery-side"><span>BATTERY −</span><strong>One cable only</strong><p>Battery negative goes directly to the shunt terminal marked <em>BATTERY MINUS</em>. Nothing else connects to this battery post or this side of the shunt.</p></div>
+            <div class="shunt-arrow">→</div>
+            <div class="shunt-centre"><strong>SHUNT</strong><span>measures every amp in and out</span></div>
+            <div class="shunt-arrow">→</div>
+            <div class="shunt-side system-side"><span>SYSTEM MINUS</span><strong>Everything else</strong><p>The negative busbar, loads, inverter and every charger connect on the <em>SYSTEM MINUS</em> side.</p></div>
+          </div>
+          <p>If a fridge, MPPT, inverter or any other device is connected directly to battery negative, its current bypasses the shunt. The monitor cannot count that energy and may show more charge remaining than the battery really has.</p>
+          <p class="source-note"><a href="https://www.victronenergy.com/media/pg/SmartShunt/en/installation.html" target="_blank" rel="noopener">See Victron's official SmartShunt connection drawing and installation instructions →</a></p>
 
           <h2>The abbreviations you will meet</h2>
           <div class="definition-grid glossary-grid">
@@ -190,7 +219,7 @@
           <div class="notice warn"><strong>This is a planning guide, not a wiring certificate.</strong> Batteries can supply enough fault current to start a fire. Follow the manuals, use correctly rated DC equipment, and have unfamiliar high-current work checked by a competent person.</div>
 
           <h2>Sources worth keeping</h2>
-          <p class="source-note"><strong>Primary references:</strong> <a href="https://www.victronenergy.com/upload/documents/The_Wiring_Unlimited_book/43562-Wiring_Unlimited-pdf-en.pdf" target="_blank" rel="noopener">Victron Energy — Wiring Unlimited</a>, <a href="https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/dc-wiring.html" target="_blank" rel="noopener">Victron's DC wiring and connector guide</a>, and <a href="https://www.nrel.gov/docs/legosti/fy96/21291.pdf" target="_blank" rel="noopener">NREL's photovoltaic terminology reference</a>. Equipment manuals and applicable electrical standards take priority.</p>
+          <p class="source-note"><strong>Primary references:</strong> <a href="https://www.victronenergy.com/upload/documents/The_Wiring_Unlimited_book/43562-Wiring_Unlimited-pdf-en.pdf" target="_blank" rel="noopener">Victron Energy — Wiring Unlimited</a>, <a href="https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/dc-wiring.html" target="_blank" rel="noopener">Victron's DC wiring and connector guide</a>, <a href="https://www.victronenergy.com/media/pg/SmartShunt/en/installation.html" target="_blank" rel="noopener">Victron's official SmartShunt installation instructions</a>, and <a href="https://www.nrel.gov/docs/legosti/fy96/21291.pdf" target="_blank" rel="noopener">NREL's photovoltaic terminology reference</a>. Equipment manuals and applicable electrical standards take priority.</p>
         </div>
         <aside class="guide-aside">
           <div class="aside-card"><strong>Use the calculator</strong><p>Build a load estimate, battery target, cable calculation and solar array with your own numbers.</p><a class="btn secondary" href="calculators.html">Open calculators</a></div>
