@@ -1,1 +1,181 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A clear guide to wiring solar panels in series, parallel and series-parallel arrays for a campervan MPPT controller."><title>Solar: series vs parallel | Where's Becky?</title><link rel="stylesheet" href="styles.css"></head><body><header class="site-header"><div class="wrap nav"><a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a><nav class="nav-links"><a href="becky.html">Becky</a><a href="gear.html">Gear</a><a class="active" href="guides.html">Guides</a><a href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a></nav></div></header><main><section class="page-hero"><div class="wrap content"><a class="back-link" href="guides.html">← All guides</a><div class="eyebrow">SOLAR WIRING</div><h1>Solar: series vs parallel.</h1><p class="lead">The panels still make the same watts. The wiring decides how those watts are presented to the controller.</p></div></section><article class="section guide-article"><div class="wrap guide-layout"><div class="guide-main"><p class="lede">Series and parallel are not “better” and “worse”. They are two ways of arranging the same panels. Series raises voltage. Parallel raises current. The right choice is the one that stays inside the MPPT's voltage, current and battery-voltage limits in the conditions you actually expect.</p><div class="notice good"><strong>Remember:</strong> power is roughly conserved. Two 100W panels are still a 200W array whether they are wired as 2S or 2P. What changes is the voltage and current at the array terminals.</div><h2>Two panels in series</h2><p>The positive of one panel connects to the negative of the next. The string voltage adds while the current stays close to one panel's current.</p><div class="circuit-card"><svg class="circuit-svg" viewBox="0 0 1040 300" role="img" aria-labelledby="series-title series-desc"><title id="series-title">Two solar panels wired in series</title><desc id="series-desc">The positive output of the first panel connects to the negative of the second. The array output is approximately 40 volts at 5 amps from two 20 volt 5 amp panels.</desc><g class="wire wire-red"><path d="M155 120 H265"/><path d="M455 120 H565"/><path d="M755 120 H850"/></g><g class="wire wire-black"><path d="M155 180 H85 V245 H850"/><path d="M755 180 V245"/></g><g class="component solar-panel"><rect x="85" y="80" width="140" height="100" rx="7"/><path d="M105 155 L155 100 L205 155 Z M155 100 V155 M130 128 H180"/><text x="155" y="70">Panel 1</text><text x="155" y="205">20Vmp · 5A</text><text x="155" y="225">100W</text><text x="103" y="115">−</text><text x="205" y="115">+</text></g><g class="component solar-panel"><rect x="565" y="80" width="140" height="100" rx="7"/><path d="M585 155 L635 100 L685 155 Z M635 100 V155 M610 128 H660"/><text x="635" y="70">Panel 2</text><text x="635" y="205">20Vmp · 5A</text><text x="635" y="225">100W</text><text x="583" y="115">−</text><text x="683" y="115">+</text></g><g class="component controller"><rect x="850" y="95" width="120" height="70" rx="8"/><text x="910" y="125">MPPT</text><text x="910" y="147">controller</text></g><text class="diagram-label red-label" x="300" y="103">series link</text><text class="diagram-label blue-label" x="355" y="270">≈ 40Vmp · 5A · 200W</text></svg><p class="diagram-caption">In a series string, voltages add. The array current is limited by the panel/string current.</p></div><h2>Two panels in parallel</h2><p>The positives join at a positive connector or busbar, and the negatives join at a negative connector or busbar. The voltage stays close to one panel's voltage while the current adds.</p><div class="circuit-card"><svg class="circuit-svg" viewBox="0 0 1040 340" role="img" aria-labelledby="parallel-title parallel-desc"><title id="parallel-title">Two solar panels wired in parallel</title><desc id="parallel-desc">The positive terminals of two panels join on a positive bus and the negative terminals join on a negative bus. The output is approximately 20 volts at 10 amps from two 20 volt 5 amp panels.</desc><g class="wire wire-red"><path d="M225 95 H400 V150 H540"/><path d="M705 95 H760 V150"/><path d="M540 150 H760"/><path d="M760 150 H850"/></g><g class="wire wire-black"><path d="M225 215 H400 V260 H540"/><path d="M705 215 H760 V260"/><path d="M540 260 H760"/><path d="M760 260 H850"/></g><g class="component solar-panel"><rect x="85" y="70" width="140" height="145" rx="7"/><path d="M105 155 L155 95 L205 155 Z M155 95 V155 M130 125 H180"/><text x="155" y="55">Panel 1</text><text x="155" y="240">20Vmp · 5A</text><text x="155" y="260">100W</text><text x="103" y="110">−</text><text x="205" y="110">+</text></g><g class="component solar-panel"><rect x="565" y="70" width="140" height="145" rx="7"/><path d="M585 155 L635 95 L685 155 Z M635 95 V155 M610 125 H660"/><text x="635" y="55">Panel 2</text><text x="635" y="240">20Vmp · 5A</text><text x="635" y="260">100W</text><text x="583" y="110">−</text><text x="683" y="110">+</text></g><g class="component bus"><rect x="400" y="130" width="140" height="40" rx="6"/><text x="470" y="155">+ combiner / bus</text><rect x="400" y="240" width="140" height="40" rx="6"/><text x="470" y="265">− combiner / bus</text></g><g class="component controller"><rect x="850" y="145" width="120" height="85" rx="8"/><text x="910" y="180">MPPT</text><text x="910" y="202">controller</text></g><text class="diagram-label red-label" x="770" y="135">positive branch fuses</text><text class="diagram-label blue-label" x="570" y="315">≈ 20Vmp · 10A · 200W</text></svg><p class="diagram-caption">In parallel, voltage stays similar and current adds. Each positive branch should be protected where the array design requires it.</p></div><h2>The comparison</h2><div class="comparison-table"><div class="comparison-row comparison-head"><strong>Arrangement</strong><strong>Voltage</strong><strong>Current</strong><strong>Usually useful when…</strong></div><div class="comparison-row"><strong>Series</strong><span>Adds</span><span>Stays about the same</span><span>You need more PV voltage to reach the controller's operating range or reduce cable current.</span></div><div class="comparison-row"><strong>Parallel</strong><span>Stays about the same</span><span>Adds</span><span>Shading may affect one panel, or the controller and cable runs are designed for the higher current.</span></div><div class="comparison-row"><strong>Series-parallel</strong><span>Adds per string</span><span>Adds per string</span><span>You have several matching panels and need a middle ground.</span></div></div><h2>What must be checked before choosing</h2><ol class="guide-steps"><li><strong>Cold Voc.</strong> Panel open-circuit voltage rises when panels are cold. Add the series Voc values, apply the temperature coefficient, and keep the result below the controller's absolute maximum PV voltage. This is the limit you must not treat casually.</li><li><strong>Working voltage.</strong> Vmp is the panel voltage at its maximum power point. The controller normally needs the PV voltage to be above the battery voltage by a specified amount before it can start charging. Check the manual rather than assuming “12V panel” means 12V output.</li><li><strong>Array current.</strong> Parallel strings add current. Check the controller's maximum PV short-circuit current, connector rating, combiner rating and cable ampacity.</li><li><strong>Battery voltage.</strong> A controller may accept 12V and 24V but not 36V, or may support 48V only on a particular model. Match the actual controller model to the battery bank.</li><li><strong>Published PV power.</strong> More panel watts can be useful, but a controller may limit the input. That can be intentional oversizing, but it is not the same as having a controller that can deliver every watt on a perfect day.</li></ol><h2>Shading: the practical warning</h2><p>Panels in series share a current path. A shaded panel can pull down the current available from that string, especially if the shade covers a meaningful part of the panel. Parallel wiring can make the unaffected string continue producing, but it is not a magic cure: bypass diodes, shade position and the controller's operating range still matter.</p><p>Keep panels in a string matched as closely as possible. Do not casually mix different panel types, orientations or heavily different shade patterns on one MPPT input.</p><div class="notice warn"><strong>Never design from the label alone.</strong> Check the panel's cold-temperature Voc, the controller's absolute maximum PV voltage, its PV short-circuit limit, its battery-voltage support and its published PV-power guidance. The calculator on this site is a planning aid, not permission to exceed a manual.</div><h2>Try the numbers</h2><p>For two 425W panels with a 37.5V Voc, putting them in series gives about 75V STC Voc and 850W of array power. The cold-corrected value is the one to use for the controller voltage check. A 12V battery then needs a controller whose 12V PV recommendation, voltage limit, current limit and battery support all make sense together.</p><p><a class="btn primary" href="calculators.html#array">Open the solar calculator</a></p><h2>Sources worth keeping</h2><p class="source-note"><strong>Primary reference:</strong> <a href="https://www.victronenergy.com/upload/documents/The_Wiring_Unlimited_book/43562-Wiring_Unlimited-pdf-en.pdf" target="_blank" rel="noopener">Victron Energy — Wiring Unlimited</a>. For controller-specific limits, use the manufacturer's current manual; Victron's <a href="https://www.victronenergy.com/media/pg/Manual_SmartSolar_MPPT_150-60_up_to_250-70/en/installation.html" target="_blank" rel="noopener">MPPT installation notes</a> are a useful example of why cold Voc and battery voltage both matter.</p></div><aside class="guide-aside"><div class="aside-card"><strong>Need the numbers?</strong><p>Build the array and compare its cold Voc, current and power with the controller database.</p><a class="btn secondary" href="calculators.html#array">Open calculators</a></div><div class="aside-card"><strong>Plan the whole system</strong><p>Start with loads, battery capacity, protection and cable routes.</p><a class="btn secondary" href="guide-planning-12v.html">Planning a 12V system →</a></div></aside></div></article></main><footer class="footer"><div class="wrap footer-inner"><div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div><div class="small">Planning tools only. Equipment manuals and applicable electrical standards take priority.</div></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A beginner's guide to solar-panel labels, MC4 connectors and wiring panels in series or parallel for an MPPT controller.">
+  <title>Solar: series vs parallel | Where's Becky?</title>
+  <link rel="stylesheet" href="styles.css?v=20260918-novice-guides">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a>
+      <nav class="nav-links"><a href="becky.html">Becky</a><a href="gear.html">Gear</a><a class="active" href="guides.html">Guides</a><a href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="wrap content">
+        <a class="back-link" href="guides.html">← All guides</a>
+        <div class="eyebrow">SOLAR FROM FIRST PRINCIPLES</div>
+        <h1>Solar: series vs parallel.</h1>
+        <p class="lead">How to read a panel label, what an MC4 connector does, and how panel wiring changes the voltage and current seen by the controller.</p>
+      </div>
+    </section>
+    <article class="section guide-article">
+      <div class="wrap guide-layout">
+        <div class="guide-main">
+          <p class="lede">A solar panel has a positive lead and a negative lead. With more than one panel, those leads can be connected in series, in parallel, or in a mixture of both. The choice changes voltage and current, so it must be made from the panel label and the controller manual.</p>
+          <div class="notice good"><strong>The one-line rule:</strong> series adds voltage; parallel adds current. Total rated watts are the sum of the panel watts either way.</div>
+          <p><strong>MPPT</strong> means <strong>Maximum Power Point Tracking</strong>. An MPPT solar charge controller sits between the panels and battery. It continually adjusts the panel operating point to collect useful power, then converts that power into the voltage and current the battery needs.</p>
+
+          <h2>First, read the panel label</h2>
+          <p>A typical label contains several numbers that look similar but answer different questions. These ratings are normally measured at <strong>STC</strong>, which means <strong>Standard Test Conditions</strong>: laboratory light of 1,000W per square metre, a solar-cell temperature of 25°C and a standardised light spectrum. STC lets panels be compared fairly; it is not a forecast of what the roof will produce every day.</p>
+          <div class="panel-label-card">
+            <div class="panel-label-head"><strong>EXAMPLE SOLAR MODULE</strong><span>Rated at STC</span></div>
+            <div><span>Pmax — maximum rated power</span><strong>425W</strong></div>
+            <div><span>Voc — open-circuit voltage</span><strong>37.5V</strong></div>
+            <div><span>Vmp — voltage at maximum power</span><strong>31.5V</strong></div>
+            <div><span>Isc — short-circuit current</span><strong>14.2A</strong></div>
+            <div><span>Imp — current at maximum power</span><strong>13.5A</strong></div>
+            <div><span>Voc temperature coefficient</span><strong>−0.25%/°C</strong></div>
+          </div>
+          <div class="definition-grid">
+            <div><h3>Pmax</h3><p>The headline panel wattage at STC. It is calculated near the maximum-power point: Vmp × Imp.</p></div>
+            <div><h3>Voc</h3><p>Voltage with the panel disconnected from a load. Voc rises as the panel gets colder, so cold-corrected Voc is used for the controller's absolute voltage check.</p></div>
+            <div><h3>Vmp</h3><p>The panel's working voltage when it is producing maximum power under the stated test conditions.</p></div>
+            <div><h3>Isc</h3><p>Short-circuit current. It is a design and test value used to check the controller, connectors, cable and protection.</p></div>
+            <div><h3>Imp</h3><p>Current at maximum power. This is closer to the panel's useful operating current in strong sun.</p></div>
+            <div><h3>Temperature coefficient</h3><p>How much a value changes with temperature. A negative Voc coefficient means voltage rises when the panel is colder than the 25°C STC cell temperature.</p></div>
+          </div>
+
+          <h2>What is an MC4 connector?</h2>
+          <p><strong>MC4 is the common locking solar connector</strong> found on panel leads. One panel normally has a positive lead and a negative lead with complementary connector housings. The connectors are designed for outdoor PV wiring and latch together so they cannot be pulled apart accidentally.</p>
+          <div class="connector-explainer">
+            <svg class="connector-svg" viewBox="0 0 900 210" role="img" aria-labelledby="mc4-title mc4-desc">
+              <title id="mc4-title">MC4 connector pair and MC4 Y-branch connectors</title>
+              <desc id="mc4-desc">A straight male and female MC4 pair joins one solar cable. A positive and negative pair of Y-branch connectors combines two panel strings in parallel.</desc>
+              <g class="wire wire-red"><path d="M25 65 H145"/><path d="M265 65 H390"/></g>
+              <g class="connector-detail"><path d="M145 42 H220 L245 65 L220 88 H145 Z"/><path d="M265 45 H240 L220 65 L240 85 H265 Z"/><line x1="170" y1="48" x2="170" y2="82"/><text x="205" y="118">straight MC4 pair</text></g>
+              <g class="wire wire-red"><path d="M500 35 H590 L650 75 H810"/><path d="M500 115 H590 L650 75"/></g>
+              <g class="wire wire-black"><path d="M500 155 H590 L650 175 H810"/><path d="M500 195 H590 L650 175"/></g>
+              <g class="connector-detail"><circle cx="650" cy="75" r="14"/><circle cx="650" cy="175" r="14"/><text x="700" y="25">MC4 Y-branches for parallel wiring</text><text x="530" y="27">panel 1 +</text><text x="530" y="107">panel 2 +</text><text x="530" y="147">panel 1 −</text><text x="530" y="207">panel 2 −</text></g>
+            </svg>
+          </div>
+          <ul class="guide-steps">
+            <li>Use PV cable, contacts and housings that are specified to work together, with the correct crimping tool.</li>
+            <li>Check the moulded + and − markings. Do not decide polarity from the apparent “male” or “female” shape alone.</li>
+            <li>Do not mix different connector makes simply because both are advertised as “MC4-compatible”. A mechanically connectable pair is not necessarily an approved matched pair.</li>
+            <li>Do not disconnect MC4 connectors while current is flowing. Isolate the circuit in the order required by the equipment manuals.</li>
+            <li>Use proper release tools. Do not force the locking tabs with pliers or leave a connector where water can sit around a damaged seal.</li>
+          </ul>
+
+          <h2>Two panels in series</h2>
+          <p>Series makes one continuous chain. Panel 1 positive connects to Panel 2 negative. The two unused outer leads become the array output to the MPPT solar charge controller.</p>
+          <div class="circuit-card">
+            <svg class="circuit-svg circuit-large" viewBox="0 0 1200 410" role="img" aria-labelledby="series-title series-desc">
+              <title id="series-title">Two solar panels correctly wired in series with MC4 connectors</title>
+              <desc id="series-desc">Panel one positive connects through an MC4 pair to panel two negative. Panel one negative connects to the MPPT negative terminal. Panel two positive connects to the MPPT positive terminal. Two 20 volt 5 amp panels produce approximately 40 volts at 5 amps and 200 watts.</desc>
+              <g class="component solar-panel">
+                <rect x="80" y="80" width="220" height="200" rx="8"/><path d="M105 245 H275 M120 210 H260 M135 175 H245 M150 140 H230 M120 105 L260 255 M190 95 V265"/>
+                <text x="190" y="55">Panel 1</text><text x="190" y="310">20Vmp · 5A · 100W</text>
+                <circle class="terminal positive" cx="300" cy="130" r="8"/><circle class="terminal negative" cx="300" cy="230" r="8"/><text x="278" y="122">+</text><text x="278" y="253">−</text>
+              </g>
+              <g class="component solar-panel">
+                <rect x="510" y="80" width="220" height="200" rx="8"/><path d="M535 245 H705 M550 210 H690 M565 175 H675 M580 140 H660 M550 105 L690 255 M620 95 V265"/>
+                <text x="620" y="55">Panel 2</text><text x="620" y="310">20Vmp · 5A · 100W</text>
+                <circle class="terminal negative" cx="510" cy="130" r="8"/><circle class="terminal positive" cx="730" cy="230" r="8"/><text x="532" y="122">−</text><text x="708" y="253">+</text>
+              </g>
+              <g class="wire wire-red"><path d="M300 130 H380"/><path d="M425 130 H510"/><path d="M730 230 H900"/></g>
+              <g class="wire wire-black"><path d="M300 230 H440 V355 H900"/></g>
+              <g class="connector-symbol"><rect x="380" y="115" width="45" height="30" rx="5"/><text x="402" y="100">MC4 series link</text></g>
+              <g class="component controller">
+                <rect x="900" y="170" width="210" height="200" rx="10"/><text x="1005" y="205">MPPT controller</text><text x="1005" y="230">PV input</text>
+                <circle class="terminal positive" cx="900" cy="230" r="8"/><circle class="terminal negative" cx="900" cy="355" r="8"/><text x="930" y="236">PV+</text><text x="930" y="361">PV−</text>
+              </g>
+              <text class="diagram-label blue-label" x="620" y="388">Array output ≈ 40Vmp · 5A · 200W</text>
+            </svg>
+            <p class="diagram-caption">The conductors land on Panel 1 − and Panel 2 + at the outer ends, with one MC4 series link between Panel 1 + and Panel 2 −.</p>
+          </div>
+          <div class="formula"><strong>Series: voltage adds; current stays about the same</strong><span>Vmp: 20V + 20V = 40V. Imp: about 5A. Power: 40V × 5A = 200W.</span></div>
+
+          <h2>Two panels in parallel</h2>
+          <p>Parallel keeps both positives together and both negatives together. A positive MC4 Y-branch combines the positive leads; a matching negative Y-branch combines the negative leads. The two combined outputs go to the controller.</p>
+          <div class="circuit-card">
+            <svg class="circuit-svg circuit-large" viewBox="0 0 1200 500" role="img" aria-labelledby="parallel-title parallel-desc">
+              <title id="parallel-title">Two solar panels correctly wired in parallel with MC4 Y-branch connectors</title>
+              <desc id="parallel-desc">Both panel positive terminals connect to a positive MC4 Y-branch and then to the MPPT positive terminal. Both panel negative terminals connect to a negative MC4 Y-branch and then to the MPPT negative terminal. Two 20 volt 5 amp panels produce approximately 20 volts at 10 amps and 200 watts.</desc>
+              <g class="component solar-panel">
+                <rect x="70" y="55" width="220" height="170" rx="8"/><path d="M95 195 H265 M110 165 H250 M125 135 H235 M140 105 H220 M115 75 L245 205 M180 70 V210"/>
+                <text x="180" y="35">Panel 1</text><text x="180" y="250">20Vmp · 5A · 100W</text>
+                <circle class="terminal positive" cx="290" cy="95" r="8"/><circle class="terminal negative" cx="290" cy="190" r="8"/><text x="268" y="87">+</text><text x="268" y="213">−</text>
+              </g>
+              <g class="component solar-panel">
+                <rect x="70" y="295" width="220" height="170" rx="8"/><path d="M95 435 H265 M110 405 H250 M125 375 H235 M140 345 H220 M115 315 L245 445 M180 310 V450"/>
+                <text x="180" y="280">Panel 2</text><text x="180" y="490">20Vmp · 5A · 100W</text>
+                <circle class="terminal positive" cx="290" cy="335" r="8"/><circle class="terminal negative" cx="290" cy="430" r="8"/><text x="268" y="327">+</text><text x="268" y="453">−</text>
+              </g>
+              <g class="wire wire-red"><path d="M290 95 H470 L550 215"/><path d="M290 335 H470 L550 215"/><path d="M550 215 H900"/></g>
+              <g class="wire wire-black"><path d="M290 190 H430 L550 360"/><path d="M290 430 H430 L550 360"/><path d="M550 360 H900"/></g>
+              <g class="connector-detail"><circle cx="550" cy="215" r="16"/><circle cx="550" cy="360" r="16"/><text x="550" y="182">positive MC4 Y-branch</text><text x="550" y="397">negative MC4 Y-branch</text></g>
+              <g class="component controller">
+                <rect x="900" y="150" width="210" height="260" rx="10"/><text x="1005" y="190">MPPT controller</text><text x="1005" y="215">PV input</text>
+                <circle class="terminal positive" cx="900" cy="215" r="8"/><circle class="terminal negative" cx="900" cy="360" r="8"/><text x="930" y="221">PV+</text><text x="930" y="366">PV−</text>
+              </g>
+              <text class="diagram-label blue-label" x="760" y="460">Array output ≈ 20Vmp · 10A · 200W</text>
+            </svg>
+            <p class="diagram-caption">Both positive conductors meet only at the positive Y-branch. Both negative conductors meet only at the negative Y-branch. Neither wire floats or changes polarity.</p>
+          </div>
+          <div class="formula"><strong>Parallel: current adds; voltage stays about the same</strong><span>Vmp: about 20V. Imp: 5A + 5A = 10A. Power: 20V × 10A = 200W.</span></div>
+
+          <h2>Series and parallel compared</h2>
+          <div class="comparison-table">
+            <div class="comparison-row comparison-head"><strong>Arrangement</strong><strong>Voltage</strong><strong>Current</strong><strong>What that means</strong></div>
+            <div class="comparison-row"><strong>Series</strong><span>Adds</span><span>Stays near one panel</span><span>Higher PV voltage and lower cable current, but the whole string shares one current path.</span></div>
+            <div class="comparison-row"><strong>Parallel</strong><span>Stays near one panel</span><span>Adds</span><span>Each branch can contribute separately, but connectors, cable and controller must carry the combined current.</span></div>
+            <div class="comparison-row"><strong>Series-parallel</strong><span>Adds within each string</span><span>Adds where strings combine</span><span>Used with larger matching arrays to balance voltage and current.</span></div>
+          </div>
+
+          <h2>The six checks that decide the layout</h2>
+          <ol class="guide-steps numbered-steps">
+            <li><strong>Battery voltage support.</strong> Confirm that the exact controller model supports your 12V, 24V, 36V or 48V battery bank.</li>
+            <li><strong>Cold array Voc.</strong> Add the Voc of panels in series, then correct it for the coldest expected panel temperature. It must stay below the controller's absolute maximum PV voltage.</li>
+            <li><strong>Working array Vmp.</strong> The array must provide enough voltage above the battery for the controller to start and continue charging. The required margin is in the controller manual.</li>
+            <li><strong>Array Isc.</strong> Add the short-circuit current of parallel strings and compare it with the controller's published PV short-circuit limit.</li>
+            <li><strong>Published PV watts.</strong> Compare total panel watts with the manufacturer's recommendation for your battery voltage. Oversizing can mean controlled clipping on strong days; it does not make an over-voltage or over-current design safe.</li>
+            <li><strong>Cable, connectors and protection.</strong> Parallel wiring raises current. Every connector, branch, combiner, isolator and cable must be rated and protected for the design.</li>
+          </ol>
+
+          <h2>Why cold weather changes the voltage check</h2>
+          <p>Solar-panel voltage rises as the cells get colder. The Voc printed on the label is normally an STC value at a 25°C cell temperature. A clear winter morning can therefore produce a higher open-circuit voltage than the label value.</p>
+          <p>The panel datasheet gives a <strong>Voc temperature coefficient</strong>, usually as a negative percentage per degree Celsius. The calculator uses that figure and your expected minimum panel temperature to estimate cold Voc. This is why the controller check uses cold-corrected Voc rather than only the number printed next to Voc.</p>
+
+          <h2>What happens in shade?</h2>
+          <p>Panels in series share one current path, so a shaded panel can reduce the current from that string. Most modern panels include bypass diodes that can let current bypass shaded cell groups, but their behaviour depends on where the shade falls.</p>
+          <p>Parallel branches are more independent: an unshaded branch can continue contributing even if another branch is weak. That does not make parallel automatically best. The higher current may need larger cable and different protection, and the lower array voltage still has to remain high enough for the MPPT to operate.</p>
+
+          <h2>A worked 425W example</h2>
+          <p>Take two matching panels, each rated at 425W, 37.5V Voc, 31.5V Vmp, 14.2A Isc and 13.5A Imp.</p>
+          <div class="worked-example two-column-example">
+            <div><span>Two in series</span><strong>850W · 75V Voc · 63V Vmp · 14.2A Isc</strong></div>
+            <div><span>Two in parallel</span><strong>850W · 37.5V Voc · 31.5V Vmp · 28.4A Isc</strong></div>
+          </div>
+          <p>Those are STC figures. The series option still needs its 75V Voc corrected upwards for cold weather. The parallel option needs equipment and cable able to accept the combined current. Both layouts need an MPPT that supports the battery voltage and total PV power.</p>
+          <p><a class="btn primary" href="calculators.html#array">Try your panels in the calculator</a></p>
+
+          <div class="notice warn"><strong>Do not connect by trial and error.</strong> A controller can reduce excess power by clipping, but it cannot make excessive PV voltage safe. Follow the current panel and controller manuals, and isolate before changing connectors.</div>
+
+          <h2>Sources worth keeping</h2>
+          <p class="source-note"><strong>Primary references:</strong> <a href="https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/dc-wiring.html" target="_blank" rel="noopener">Victron Energy — DC wiring, MC4 and solar arrays</a>, <a href="https://www.victronenergy.com/media/pg/Manual_SmartSolar_MPPT_150-60_up_to_250-70/en/installation.html" target="_blank" rel="noopener">Victron MPPT installation guidance</a>, <a href="https://www.staubli.com/us/en/electrical-connectors/products/renewable-energy-solutions/tools-and-accessories.html" target="_blank" rel="noopener">Stäubli — Original MC4 tooling</a>, <a href="https://www.staubli.com/global/en/electrical-connectors/industries/renewable-energy/cross-connection.html" target="_blank" rel="noopener">Stäubli — why PV connector brands should not be cross-mated</a>, and <a href="https://www.nrel.gov/docs/legosti/fy96/21291.pdf" target="_blank" rel="noopener">NREL — photovoltaic terminology and STC</a>.</p>
+        </div>
+        <aside class="guide-aside">
+          <div class="aside-card"><strong>Use your own label</strong><p>Enter panel watts, Voc, Vmp, Isc and Imp, then compare series and parallel layouts.</p><a class="btn secondary" href="calculators.html#array">Open solar calculator</a></div>
+          <div class="aside-card"><strong>Start at the beginning</strong><p>Learn batteries, fuses, busbars, shunts and the rest of a 12V system.</p><a class="btn secondary" href="guide-planning-12v.html">Planning a 12V system →</a></div>
+        </aside>
+      </div>
+    </article>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div><div class="small">Planning tools only. Equipment manuals and applicable electrical standards take priority.</div></div></footer>
+</body>
+</html>

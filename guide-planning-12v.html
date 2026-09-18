@@ -1,1 +1,204 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A beginner-friendly guide to planning a 12V campervan electrical system, from loads and battery capacity to fuses and charging."><title>Planning a 12V system | Where's Becky?</title><link rel="stylesheet" href="styles.css"></head><body><header class="site-header"><div class="wrap nav"><a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a><nav class="nav-links"><a href="becky.html">Becky</a><a href="gear.html">Gear</a><a class="active" href="guides.html">Guides</a><a href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a></nav></div></header><main><section class="page-hero"><div class="wrap content"><a class="back-link" href="guides.html">← All guides</a><div class="eyebrow">ELECTRICAL PLANNING</div><h1>Planning a 12V system.</h1><p class="lead">A sensible order for working out what the van needs, how big the battery should be, and where the fuses belong.</p></div></section><article class="section guide-article"><div class="wrap guide-layout"><div class="guide-main"><p class="lede">A 12V system is not one big purchase. It is a chain of decisions: what the loads use, how long they need to run, where that energy comes from, and how every cable is protected when something goes wrong.</p><div class="notice good"><strong>The short version:</strong> list the loads first, size the battery from real use, choose charging sources, then size cables and protection. Do not start with the biggest battery you can afford.</div><h2>The system in one picture</h2><p>This is the usual layout for a small campervan. Positive current leaves the battery through a main fuse and isolator, reaches a positive busbar, then goes through an individual fuse to each load. The negative side returns through a shunt so the battery monitor can measure what goes in and out.</p><div class="circuit-card"><svg class="circuit-svg" viewBox="0 0 1040 390" role="img" aria-labelledby="plan-diagram-title plan-diagram-desc"><title id="plan-diagram-title">Typical 12 volt campervan electrical system</title><desc id="plan-diagram-desc">Solar panels feed an MPPT controller. The controller and battery connect to positive and negative busbars. A main fuse and isolator protect the positive feed, while a shunt sits between the battery negative and negative busbar. Loads leave through individual fuses.</desc><defs><marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#10a7e8"/></marker><marker id="arrow-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#ff6b6b"/></marker></defs><g class="wire wire-blue"><path d="M145 85 H255"/><path d="M355 85 H450 V150"/></g><g class="wire wire-red"><path d="M560 150 H640"/><path d="M715 150 H770 V105"/><path d="M770 105 H870"/><path d="M770 105 V255 H870"/></g><g class="wire wire-black"><path d="M450 270 V325 H390"/><path d="M390 325 H285"/><path d="M285 325 H160"/><path d="M640 270 V325 H560"/><path d="M560 325 H390"/></g><g class="wire wire-red"><path d="M870 105 H940"/><path d="M870 255 H940"/></g><g class="component solar"><rect x="35" y="45" width="110" height="80" rx="8"/><path d="M50 105 L75 65 L100 105 Z M75 65 V105 M62 85 H88"/><text x="90" y="145">PV array</text><text x="90" y="163">Voc / Isc</text></g><g class="component controller"><rect x="255" y="45" width="100" height="80" rx="8"/><text x="305" y="78">MPPT</text><text x="305" y="100">charger</text></g><g class="component"><rect x="450" y="150" width="110" height="120" rx="8"/><text x="505" y="195">+</text><text x="505" y="218">12V</text><text x="505" y="241">battery</text><path d="M485 175 V245 M525 175 V245" stroke="#aab4bd" stroke-width="2"/><path d="M478 180 H492 M518 180 H532" stroke="#aab4bd" stroke-width="2"/></g><g class="component protection"><path d="M640 150 l18 -13 l18 13 l18 -13 l18 13"/><text x="675" y="123">main fuse</text><rect x="760" y="75" width="20" height="60" rx="3"/><text x="770" y="62">isolator</text></g><g class="component bus"><rect x="870" y="75" width="70" height="60" rx="6"/><text x="905" y="110">+ bus</text><rect x="870" y="225" width="70" height="60" rx="6"/><text x="905" y="260">− bus</text></g><g class="component load"><path d="M940 105 H970 V75 H1000 V135 H970 V105"/><text x="970" y="62">fuse</text><text x="1000" y="160">lights / fridge / USB</text><path d="M940 255 H1000"/><text x="1000" y="276">negative return</text></g><g class="component shunt"><rect x="285" y="300" width="105" height="50" rx="6"/><text x="337" y="330">shunt</text><text x="337" y="368">battery monitor</text></g><text class="diagram-label blue-label" x="185" y="72">PV cable</text><text class="diagram-label red-label" x="585" y="140">protected positive</text><text class="diagram-label black-label" x="390" y="345">all negative current passes here</text></svg><p class="diagram-caption">A simplified wiring layout. The exact fuse sizes and cable sizes depend on the equipment, cable length, installation method and local requirements.</p></div><h2>Start with the loads</h2><p>Write down each appliance, its current or wattage, and how long it runs in a day. A fridge may be rated at 45W but does not necessarily draw 45W continuously; use a realistic daily estimate. A laptop, inverter or heater can be a different story because their high-power periods matter.</p><div class="formula"><strong>Energy used (Wh) = power (W) × time (hours)</strong><span>Example: a 40W device running for 5 hours uses 200Wh.</span></div><p>Once the daily watt-hours are known, divide by the battery voltage to estimate amp-hours. Allow for usable-capacity limits and losses; a battery should not normally be planned around its entire nameplate capacity.</p><h2>The useful electrical words</h2><div class="definition-grid"><div><h3>Voltage — V</h3><p>Electrical pressure. A 12V battery is nominally 12V, but its actual voltage moves with state of charge, load and charging. Voltage tells you the system level; it does not tell you how much energy is stored.</p></div><div><h3>Current — A</h3><p>Amps are the flow of electricity at a moment in time. Cable heating and fuse selection are mainly current questions.</p></div><div><h3>Power — W</h3><p>Watts are the rate of doing work. The relationship is <strong>W = V × A</strong>. At 12V, a 120W load draws about 10A before conversion losses.</p></div><div><h3>Capacity — Ah</h3><p>Amp-hours describe charge capacity. A 100Ah battery can theoretically deliver 100A for one hour, or 10A for ten hours, but real usable capacity depends on chemistry, temperature, discharge rate and cut-off settings.</p></div><div><h3>SOC</h3><p><strong>State of charge.</strong> The estimated percentage of energy remaining in the battery. SOC is not the same thing as voltage, especially while a load or charger is active.</p></div><div><h3>Voc and Vmp</h3><p><strong>Voc</strong> is a solar panel's open-circuit voltage. <strong>Vmp</strong> is its voltage at maximum power. Use cold-corrected Voc when checking the controller's maximum PV voltage; Vmp is the useful working point under load.</p></div><div><h3>Isc and Imp</h3><p><strong>Isc</strong> is short-circuit current and <strong>Imp</strong> is current at maximum power. Array current rises when panels are paralleled. Check both the controller's PV-current limit and the cable design.</p></div><div><h3>MPPT</h3><p><strong>Maximum Power Point Tracking.</strong> The controller continuously looks for the voltage and current combination that extracts the most useful power from the panels, then converts it to the battery's charging voltage.</p></div></div><h2>Choose the battery after the load estimate</h2><ol class="guide-steps"><li><strong>Total the daily Wh.</strong> Include the inverter's losses for AC appliances.</li><li><strong>Choose autonomy.</strong> Decide how many days you want to cover without meaningful charging.</li><li><strong>Allow usable capacity.</strong> LiFePO₄, AGM and other chemistries have different sensible limits.</li><li><strong>Check the battery's continuous and peak current limits.</strong> A large battery does not automatically make an inverter safe.</li></ol><h2>Charging and protection</h2><p>Every charging source needs to suit the battery chemistry and its voltage limits. Solar, alternator chargers and mains chargers normally meet at the battery side of the system, but each source still needs its own correctly sized protection and cable run.</p><p>Put overcurrent protection as close as practical to the source of available fault current. The main battery fuse is there because a battery can deliver enormous current into a short circuit. Individual branch fuses protect the cable to each load. An isolator is for safely disconnecting equipment; it is not a substitute for a fuse.</p><div class="notice warn"><strong>Take care:</strong> this is a planning guide, not a wiring certificate. Follow the battery, charger and inverter manuals, use correctly rated DC components, and have unfamiliar high-current work checked by a competent person.</div><h2>A sensible commissioning order</h2><ol class="guide-steps"><li>Label both ends of every cable before it disappears into the build.</li><li>Check polarity and continuity with the system unpowered.</li><li>Fit fuses only after the cable and termination checks are complete.</li><li>Power up the battery side first, then connect charging sources as their manuals specify.</li><li>Test each circuit separately and record voltages, current and any unexpected heat.</li></ol><h2>Sources worth keeping</h2><p class="source-note"><strong>Primary references:</strong> <a href="https://www.victronenergy.com/upload/documents/The_Wiring_Unlimited_book/43562-Wiring_Unlimited-pdf-en.pdf" target="_blank" rel="noopener">Victron Energy — Wiring Unlimited</a> and the <a href="https://www.victronenergy.com/media/pg/Manual_SmartSolar_MPPT_150-60_up_to_250-70/en/technical-specifications.html" target="_blank" rel="noopener">SmartSolar MPPT technical specifications</a>. Equipment manuals and applicable electrical standards take priority over this overview.</p></div><aside class="guide-aside"><div class="aside-card"><strong>Use the calculator</strong><p>Turn your actual loads, battery bank and solar-panel numbers into a first-pass design.</p><a class="btn secondary" href="calculators.html">Open calculators</a></div><div class="aside-card"><strong>Next guide</strong><p>Understand what changes when solar panels are wired in series or parallel.</p><a class="btn secondary" href="guide-solar-series-parallel.html">Series vs parallel →</a></div></aside></div></article></main><footer class="footer"><div class="wrap footer-inner"><div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div><div class="small">Planning tools only. Equipment manuals and applicable electrical standards take priority.</div></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A plain-English guide to planning a 12V campervan electrical system, including volts, amps, watts, batteries, cables, fuses and charging.">
+  <title>Planning a 12V system | Where's Becky?</title>
+  <link rel="stylesheet" href="styles.css?v=20260918-novice-guides">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="index.html"><span class="brand-mark">B</span><span>WHERE'S BECKY?</span></a>
+      <nav class="nav-links"><a href="becky.html">Becky</a><a href="gear.html">Gear</a><a class="active" href="guides.html">Guides</a><a href="calculators.html">Calculators</a><a href="build.html">Build</a><a href="support.html">Support</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="wrap content">
+        <a class="back-link" href="guides.html">← All guides</a>
+        <div class="eyebrow">STARTING FROM ZERO</div>
+        <h1>Planning a 12V system.</h1>
+        <p class="lead">What every part does, what the letters mean, and the order to make decisions before buying cable or batteries.</p>
+      </div>
+    </section>
+    <article class="section guide-article">
+      <div class="wrap guide-layout">
+        <div class="guide-main">
+          <p class="lede">A campervan electrical system is easier to understand when you stop seeing it as a cupboard full of equipment. It is one complete circuit: energy is collected, stored, distributed to an appliance, and returned to the battery.</p>
+          <div class="notice good"><strong>If you remember one rule:</strong> work out what you need to power before choosing the battery, chargers, cable or fuses.</div>
+
+          <h2>Electricity in four ideas</h2>
+          <div class="definition-grid beginner-grid">
+            <div><h3>Voltage (V)</h3><p>Voltage is the electrical push. A system called “12V” does not sit at exactly 12.0V; battery voltage changes while it charges and discharges.</p></div>
+            <div><h3>Current (A)</h3><p>Current is the amount of electricity flowing now. It is measured in amps. More current means more heating in the cable, which is why high-current equipment needs thicker cable.</p></div>
+            <div><h3>Power (W)</h3><p>Power is how quickly a device is using energy. It is measured in watts. The basic relationship is <strong>watts = volts × amps</strong>.</p></div>
+            <div><h3>Energy (Wh)</h3><p>Energy is power used over time. A 40W fridge consuming power for five hours has used 200 watt-hours: <strong>40W × 5h = 200Wh</strong>.</p></div>
+          </div>
+          <div class="plain-example">
+            <strong>Why watts and amps are not interchangeable</strong>
+            <p>A 120W appliance on 12V draws about 10A because 120 ÷ 12 = 10. The same 120W on 24V draws about 5A. The appliance power is still 120W, but the higher-voltage system carries it with less current.</p>
+          </div>
+
+          <h2>DC, AC and polarity</h2>
+          <p><strong>DC</strong> means direct current. Batteries, solar panels, USB sockets, many fridges and most campervan lighting use DC. It has a positive (+) and negative (−) side, and polarity must be correct.</p>
+          <p><strong>AC</strong> means alternating current. UK household sockets supply AC. A van uses an <strong>inverter</strong> to turn battery DC into mains-style AC. That conversion wastes some energy, so a 500W AC appliance takes more than 500W from the battery side.</p>
+          <p><strong>PV</strong> means photovoltaic—the solar-panel side of the system. <strong>MPPT</strong> means Maximum Power Point Tracking, the method used by a solar charge controller to obtain useful power from the panels and turn it into controlled battery charging.</p>
+
+          <h2>The whole system, wired as a circuit</h2>
+          <p>Every line below lands on a labelled terminal. Red is positive, grey is negative, and blue is the solar-panel side. A fuse is placed in the positive cable near the source of the fault current it is protecting against.</p>
+          <div class="circuit-card">
+            <svg class="circuit-svg circuit-large" viewBox="0 0 1200 650" role="img" aria-labelledby="system-title system-desc">
+              <title id="system-title">Complete basic 12 volt campervan circuit</title>
+              <desc id="system-desc">A solar panel connects through MC4 connectors and a solar isolator to an MPPT charge controller. The controller connects through a fuse to positive and negative busbars. The battery connects through a main fuse and master isolator to the positive busbar, and through a shunt to the negative busbar. A fused distribution board supplies a light and fridge, with all negative returns connected to the negative busbar.</desc>
+              <g class="wire wire-blue">
+                <path d="M160 95 H260"/><path d="M300 95 H375"/><path d="M425 95 H500"/>
+                <path d="M160 155 H260"/><path d="M300 155 H375"/><path d="M425 155 H500"/>
+              </g>
+              <g class="wire wire-red">
+                <path d="M590 185 V250 H700"/><path d="M760 250 V260"/>
+                <path d="M440 440 H500"/><path d="M555 440 H620"/><path d="M670 440 H760 V300"/>
+                <path d="M760 280 H845"/><path d="M905 280 H970"/><path d="M1010 280 H1080 V230"/>
+                <path d="M1010 280 H1080 V360"/>
+              </g>
+              <g class="wire wire-black">
+                <path d="M590 255 V330 H730"/>
+                <path d="M440 500 H500"/><path d="M580 500 H760 V370"/>
+                <path d="M790 350 H1080 V265"/><path d="M1080 405 V350"/>
+              </g>
+
+              <g class="component solar-panel">
+                <rect x="40" y="55" width="120" height="140" rx="8"/>
+                <path d="M58 165 H142 M68 145 H132 M78 125 H122 M88 105 H112 M70 75 L130 175 M100 65 V185"/>
+                <circle class="terminal negative" cx="160" cy="155" r="7"/><circle class="terminal positive" cx="160" cy="95" r="7"/>
+                <text x="100" y="35">solar panel</text><text x="140" y="88">+</text><text x="140" y="178">−</text>
+              </g>
+              <g class="connector-symbol">
+                <rect x="260" y="80" width="40" height="30" rx="5"/><rect x="260" y="140" width="40" height="30" rx="5"/>
+                <text x="280" y="73">MC4 pair</text>
+              </g>
+              <g class="switch-symbol">
+                <circle cx="375" cy="95" r="6"/><circle cx="425" cy="95" r="6"/><path d="M379 91 L416 72"/>
+                <circle cx="375" cy="155" r="6"/><circle cx="425" cy="155" r="6"/><path d="M379 151 L416 132"/>
+                <text x="400" y="188">double-pole PV isolator</text>
+              </g>
+              <g class="component controller">
+                <rect x="500" y="60" width="180" height="195" rx="10"/>
+                <text x="590" y="95">MPPT solar charger</text><text x="590" y="118">turns panel power into</text><text x="590" y="138">controlled battery charging</text>
+                <circle class="terminal positive" cx="500" cy="95" r="7"/><circle class="terminal negative" cx="500" cy="155" r="7"/>
+                <circle class="terminal positive" cx="590" cy="185" r="7"/><circle class="terminal negative" cx="590" cy="255" r="7"/>
+                <text x="523" y="87">PV+</text><text x="523" y="177">PV−</text><text x="615" y="180">BAT+</text><text x="617" y="250">BAT−</text>
+              </g>
+              <g class="fuse-symbol">
+                <rect x="700" y="238" width="60" height="24" rx="4"/><path d="M710 250 H750"/><text x="730" y="225">charger fuse</text>
+              </g>
+              <g class="component bus">
+                <rect x="730" y="260" width="60" height="40" rx="6"/><text x="760" y="285">+ bus</text>
+                <rect x="730" y="330" width="60" height="40" rx="6"/><text x="760" y="355">− bus</text>
+              </g>
+              <g class="component battery">
+                <rect x="300" y="400" width="140" height="140" rx="10"/>
+                <line x1="335" y1="430" x2="335" y2="510"/><line x1="395" y1="445" x2="395" y2="495"/>
+                <circle class="terminal positive" cx="440" cy="440" r="7"/><circle class="terminal negative" cx="440" cy="500" r="7"/>
+                <text x="370" y="385">12V leisure battery</text><text x="370" y="475">stores energy</text><text x="420" y="432">+</text><text x="420" y="523">−</text>
+              </g>
+              <g class="fuse-symbol"><rect x="500" y="428" width="55" height="24" rx="4"/><path d="M510 440 H545"/><text x="528" y="414">main fuse</text></g>
+              <g class="switch-symbol"><circle cx="620" cy="440" r="6"/><circle cx="670" cy="440" r="6"/><path d="M624 436 L662 417"/><text x="645" y="405">master isolator</text></g>
+              <g class="component shunt"><rect x="500" y="480" width="80" height="40" rx="6"/><text x="540" y="505">shunt</text><text x="540" y="544">measures all battery current</text></g>
+              <g class="component distribution"><rect x="845" y="250" width="60" height="60" rx="6"/><text x="875" y="276">fuse</text><text x="875" y="296">board</text></g>
+              <g class="fuse-symbol"><rect x="970" y="268" width="40" height="24" rx="4"/><path d="M978 280 H1002"/><text x="990" y="255">branch fuse</text></g>
+              <g class="component load">
+                <circle cx="1080" cy="230" r="35"/><path d="M1057 207 L1103 253 M1103 207 L1057 253"/><text x="1140" y="235">light</text>
+                <rect x="1045" y="360" width="70" height="45" rx="5"/><text x="1080" y="388">fridge</text>
+              </g>
+              <g class="junctions"><circle cx="1080" cy="280" r="6"/><circle cx="1080" cy="350" r="6"/></g>
+              <text class="diagram-label blue-label" x="325" y="45">PV side: panel voltage</text>
+              <text class="diagram-label red-label" x="615" y="470">battery positive path</text>
+              <text class="diagram-label black-label" x="835" y="385">negative return path</text>
+            </svg>
+            <p class="diagram-caption"><strong>Reading the drawing:</strong> each circle is a terminal or junction. A line never stops in mid-air: it finishes on another terminal, a connector or a junction. Your actual system may also include alternator charging, mains charging and an inverter.</p>
+          </div>
+
+          <h2>What each part does</h2>
+          <div class="parts-list">
+            <div><h3>Leisure battery</h3><p>Stores energy for the living area. It is separate from the starter battery in a typical installation.</p></div>
+            <div><h3>Busbar</h3><p>A solid common connection point. A positive busbar distributes the supply; a negative busbar gathers the return cables.</p></div>
+            <div><h3>Fuse</h3><p>Protects the cable from overheating if too much current flows. The fuse rating must suit the cable and the expected load. A fuse is not an on/off switch.</p></div>
+            <div><h3>Isolator</h3><p>A switch intended to disconnect part of the system for maintenance or an emergency. It does not replace a fuse.</p></div>
+            <div><h3>Shunt</h3><p>A calibrated measuring point in the battery-negative cable. A battery monitor uses the tiny voltage drop across it to calculate current and estimate battery state of charge.</p></div>
+            <div><h3>MPPT solar charger</h3><p>Maximum Power Point Tracking. It finds the panel's useful operating point and converts that power into the correct charging voltage and current for the battery.</p></div>
+            <div><h3>BMS</h3><p>Battery Management System. In a lithium battery it monitors cells and can disconnect charging or loads if voltage, current or temperature moves outside its limits.</p></div>
+            <div><h3>Inverter</h3><p>Turns battery DC into mains-style AC. Large inverters draw very high current from a 12V battery and need short, heavy cables and suitable protection.</p></div>
+          </div>
+
+          <h2>The abbreviations you will meet</h2>
+          <div class="definition-grid glossary-grid">
+            <div><h3>SOC</h3><p><strong>State of charge:</strong> the battery monitor's estimate of how full the battery is, shown as a percentage.</p></div>
+            <div><h3>Ah</h3><p><strong>Amp-hours:</strong> battery charge capacity. It is useful only when the battery voltage is also known.</p></div>
+            <div><h3>Wh</h3><p><strong>Watt-hours:</strong> stored or used energy. Wh makes it easier to compare loads and batteries operating at different voltages.</p></div>
+            <div><h3>PV</h3><p><strong>Photovoltaic:</strong> the technical word for equipment that turns light into electricity. “PV array” simply means the group of solar panels.</p></div>
+            <div><h3>Voc</h3><p><strong>Open-circuit voltage:</strong> panel voltage when nothing is drawing power. It rises in cold conditions and is used to check the controller's absolute voltage limit.</p></div>
+            <div><h3>Vmp</h3><p><strong>Voltage at maximum power:</strong> the panel voltage near its most productive working point under the stated test conditions.</p></div>
+            <div><h3>Isc</h3><p><strong>Short-circuit current:</strong> a panel test value used when checking controller, cable and protection limits. It is not the normal charging current.</p></div>
+            <div><h3>Imp</h3><p><strong>Current at maximum power:</strong> the panel current at its rated maximum-power point.</p></div>
+            <div><h3>STC</h3><p><strong>Standard Test Conditions:</strong> a laboratory reference used for panel ratings—1,000W/m² of light, a 25°C cell temperature and a standard solar spectrum. It allows fair comparison; it is not a promise of everyday output.</p></div>
+            <div><h3>DoD</h3><p><strong>Depth of discharge:</strong> the percentage of battery capacity that has been used. An 80% DoD means 20% remains.</p></div>
+          </div>
+
+          <h2>Connectors and cable ends</h2>
+          <p>A sound circuit depends as much on its joints as its cable. Loose or badly crimped connections add resistance, create heat and cause voltage drop.</p>
+          <ul class="guide-steps">
+            <li><strong>MC4:</strong> the common locking, weather-resistant connector fitted to solar-panel leads. Panels usually arrive with one positive and one negative MC4-style lead. Use the correct crimp tool and matching contacts; the moulded connector shape alone is not a substitute for checking the + and − markings.</li>
+            <li><strong>MC4 Y-branch:</strong> a matched pair of splitters used to join panel strings in parallel. Parallel wiring increases current, so the cable, connector and controller limits must be checked.</li>
+            <li><strong>Ring lug:</strong> a metal eye crimped onto larger cable and bolted to batteries, busbars, fuses and shunts. Use the correct lug for both the cable size and stud size.</li>
+            <li><strong>Ferrule:</strong> a sleeve crimped over fine-stranded cable before it enters a compatible screw or clamp terminal. Use one only where the equipment maker permits it.</li>
+            <li><strong>Heat-shrink:</strong> protects and supports a finished crimp, but it cannot rescue a poor mechanical joint.</li>
+          </ul>
+          <div class="notice warn"><strong>Connector caution:</strong> “MC4-compatible” does not guarantee that connectors from different manufacturers form a safe matched pair. Keep mated connectors from the same product family, use the specified contacts and tooling, and do not unplug a PV connector while it is carrying current.</div>
+
+          <h2>Plan the system in this order</h2>
+          <ol class="guide-steps numbered-steps">
+            <li><strong>List every load.</strong> Record watts or amps, quantity, hours per day, and whether it runs on 12V DC or through an inverter.</li>
+            <li><strong>Calculate daily energy.</strong> Multiply watts by hours for each item, then add the watt-hours together.</li>
+            <li><strong>Choose reserve time.</strong> Decide how long the system should last without useful solar or driving.</li>
+            <li><strong>Choose the battery.</strong> Check usable capacity, continuous current, surge current, charging limits, temperature limits and the battery-management-system rating.</li>
+            <li><strong>Choose charging sources.</strong> Solar, alternator and mains chargers must all support the battery chemistry and voltage.</li>
+            <li><strong>Draw the circuit.</strong> Put every fuse, isolator, busbar, shunt, connector and cable termination on the drawing.</li>
+            <li><strong>Size cables and protection.</strong> Use current, cable length, acceptable voltage drop, installation method and temperature—not guesswork.</li>
+            <li><strong>Check access.</strong> Fuses and isolators must remain reachable after the furniture is built.</li>
+          </ol>
+
+          <h2>A simple energy example</h2>
+          <div class="worked-example">
+            <div><span>Fridge</span><strong>45W × 8h = 360Wh</strong></div>
+            <div><span>Four lights</span><strong>4 × 3W × 5h = 60Wh</strong></div>
+            <div><span>Laptop</span><strong>65W × 3h = 195Wh</strong></div>
+            <div class="example-total"><span>Daily total</span><strong>615Wh</strong></div>
+          </div>
+          <p>At a nominal 12V, 615Wh is roughly 51Ah before allowing for conversion losses, reserve and the battery's usable-capacity limit. This is why daily watt-hours are the useful starting point.</p>
+
+          <h2>Before switching on</h2>
+          <ol class="guide-steps">
+            <li>Check every cable against the drawing and label both ends.</li>
+            <li>With the system unpowered, check continuity and confirm that positive is not shorted to negative.</li>
+            <li>Check every crimp with a firm pull and tighten terminals to the manufacturer's stated torque.</li>
+            <li>Fit fuses only after the cable and polarity checks are complete.</li>
+            <li>Follow each equipment manual's power-up order. Many solar controllers should see the battery before the panels.</li>
+            <li>Test one circuit at a time, watching voltage, current and unexpected heat.</li>
+          </ol>
+          <div class="notice warn"><strong>This is a planning guide, not a wiring certificate.</strong> Batteries can supply enough fault current to start a fire. Follow the manuals, use correctly rated DC equipment, and have unfamiliar high-current work checked by a competent person.</div>
+
+          <h2>Sources worth keeping</h2>
+          <p class="source-note"><strong>Primary references:</strong> <a href="https://www.victronenergy.com/upload/documents/The_Wiring_Unlimited_book/43562-Wiring_Unlimited-pdf-en.pdf" target="_blank" rel="noopener">Victron Energy — Wiring Unlimited</a>, <a href="https://www.victronenergy.com/media/pg/The_Wiring_Unlimited_book/en/dc-wiring.html" target="_blank" rel="noopener">Victron's DC wiring and connector guide</a>, and <a href="https://www.nrel.gov/docs/legosti/fy96/21291.pdf" target="_blank" rel="noopener">NREL's photovoltaic terminology reference</a>. Equipment manuals and applicable electrical standards take priority.</p>
+        </div>
+        <aside class="guide-aside">
+          <div class="aside-card"><strong>Use the calculator</strong><p>Build a load estimate, battery target, cable calculation and solar array with your own numbers.</p><a class="btn secondary" href="calculators.html">Open calculators</a></div>
+          <div class="aside-card"><strong>Next guide</strong><p>See exactly how MC4-connected panels differ in series and parallel.</p><a class="btn secondary" href="guide-solar-series-parallel.html">Series vs parallel →</a></div>
+        </aside>
+      </div>
+    </article>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><div><strong>Where's Becky?</strong><br><span class="small">Built, not bought.</span></div><div class="small">Planning tools only. Equipment manuals and applicable electrical standards take priority.</div></div></footer>
+</body>
+</html>
