@@ -61,6 +61,7 @@ const md=[15,46,74,105,135,166,196,227,258,288,319,349],rad=d=>d*Math.PI/180;fun
 ['solar-watts','solar-lat','solar-month','solar-weather','solar-mount','solar-eff','solar-demand'].forEach(id=>$(id).addEventListener('input',calcSolar));
 calcWire();calcUsage();calcBattery();calcBank();calcArray();calcSolar();
 renderControllerReference();
+$('manual-close').addEventListener('click',closeManual);$('manual-close-bottom').addEventListener('click',closeManual);$('manual-modal').addEventListener('click',event=>{if(event.target.id==='manual-modal')closeManual()});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('manual-modal').hidden)closeManual()});
 })();
 </script>
 </body></html>
