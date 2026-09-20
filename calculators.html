@@ -86,39 +86,95 @@ function renderPrintSummaryV2(model) {
   container.replaceChildren();
 
   const displayValue = value => value === null || value === undefined || value === '' ? '—' : String(value);
-
-  const add = (tag, text, className) => {
+  const add = (tag, text, className, parent = container) => {
     const element = document.createElement(tag);
     if (className) element.className = className;
     element.textContent = displayValue(text);
-    container.appendChild(element);
+    parent.appendChild(element);
     return element;
   };
-  const overviewItem = (label, value) => {
-    const item = document.createElement('p');
-    const name = document.createElement('strong');
-    name.textContent = `${label}: `;
-    item.append(name, document.createTextNode(displayValue(value)));
-    container.appendChild(item);
+  const addSection = title => {
+    const section = document.createElement('section');
+    section.className = 'print-section';
+    add('h2', title, '', section);
+    container.appendChild(section);
+    return section;
+  };
+  const addKeyValue = (parent, label, value) => {
+    const item = document.createElement('div');
+    item.className = 'print-key-value';
+    const name = document.createElement('dt');
+    const result = document.createElement('dd');
+    name.textContent = label;
+    result.textContent = displayValue(value);
+    item.append(name, result);
+    parent.appendChild(item);
+  };
+  const addKeyValues = (parent, items, className = 'print-key-values') => {
+    const list = document.createElement('dl');
+    list.className = className;
+    items.forEach(([label, value]) => addKeyValue(list, label, value));
+    parent.appendChild(list);
+    return list;
+  };
+  const addTable = (parent, headings, rows, className = '') => {
+    const table = document.createElement('table');
+    if (className) table.className = className;
+    const head = document.createElement('thead');
+    const body = document.createElement('tbody');
+    const headingRow = document.createElement('tr');
+    headings.forEach(text => {
+      const cell = document.createElement('th');
+      cell.scope = 'col';
+      cell.textContent = text;
+      headingRow.appendChild(cell);
+    });
+    head.appendChild(headingRow);
+    rows.forEach(values => {
+      const row = document.createElement('tr');
+      values.forEach(value => {
+        const cell = document.createElement('td');
+        cell.textContent = displayValue(value);
+        row.appendChild(cell);
+      });
+      body.appendChild(row);
+    });
+    table.append(head, body);
+    parent.appendChild(table);
+    return table;
   };
 
-  add('h1', 'Where’s Becky?');
-  add('h2', 'Van Electrical Plan');
-  add('p', `Generated: ${model.generatedAt || '—'}`);
-  add('p', 'https://wheresbecky.co.uk/');
-  add('h2', 'Overview');
-  overviewItem('Daily energy', model.overview?.dailyEnergy);
-  overviewItem('Battery target', model.overview?.batteryTarget);
-  overviewItem('Battery bank', model.overview?.batteryBank);
-  overviewItem('Solar array', model.overview?.solarArray);
-  overviewItem('Estimated solar', model.overview?.estimatedSolar);
-  overviewItem('Cable', model.overview?.cable);
+  const header = document.createElement('header');
+  header.className = 'print-header';
+  add('h1', 'Where’s Becky?', '', header);
+  add('p', 'Van Electrical Plan', 'print-subtitle', header);
+  add('p', `Generated: ${displayValue(model.generatedAt)}`, 'print-generated', header);
+  add('p', 'https://wheresbecky.co.uk/', 'print-url', header);
+  container.appendChild(header);
 
-  add('h2', 'Energy Budget');
-  overviewItem('System voltage', model.energy?.settings?.systemVoltage);
-  overviewItem('Inverter efficiency', model.energy?.settings?.inverterEfficiency);
+  const overview = addSection('System Overview');
+  addKeyValues(overview, [
+    ['Daily energy', model.overview?.dailyEnergy],
+    ['Battery requirement', model.overview?.batteryTarget],
+    ['Configured battery bank', model.overview?.batteryBank],
+    ['Solar array', model.overview?.solarArray],
+    ['Estimated solar yield', model.overview?.estimatedSolar],
+    ['Connected load', model.systemPlanner?.summary?.connectedLoad],
+    ['Possible charging', model.systemPlanner?.summary?.possibleCharging]
+  ], 'print-key-values print-key-values-summary');
+
+  const energy = addSection('Loads / Energy Budget');
+  addKeyValues(energy, [
+    ['System voltage', model.energy?.settings?.systemVoltage],
+    ['Inverter efficiency', model.energy?.settings?.inverterEfficiency],
+    ['Daily energy', model.energy?.results?.dailyEnergy],
+    ['Battery draw', model.energy?.results?.batteryDraw],
+    ['Average load', model.energy?.results?.averageLoad],
+    ['30-day energy', model.energy?.results?.month]
+  ]);
   if (model.energy?.devices?.length) {
     const table = document.createElement('table');
+    table.className = 'print-appliance-table';
     const head = document.createElement('thead');
     const body = document.createElement('tbody');
     const headings = ['Device', 'Watts', 'Qty', 'Hours/day', 'Supply', 'Wh/day'];
@@ -131,108 +187,101 @@ function renderPrintSummaryV2(model) {
       body.appendChild(row);
     });
     table.append(head, body);
-    container.appendChild(table);
+    energy.appendChild(table);
   } else {
-    add('p', 'No appliance rows in this plan.');
+    add('p', 'No appliance rows in this plan.', 'print-note', energy);
   }
-  overviewItem('Daily energy', model.energy?.results?.dailyEnergy);
-  overviewItem('Battery draw', model.energy?.results?.batteryDraw);
-  overviewItem('Average load', model.energy?.results?.averageLoad);
-  overviewItem('30-day energy', model.energy?.results?.month);
 
-  add('h2', 'Battery Sizing');
-  const batterySettings = model.battery?.settings || {};
-  [['Target voltage', batterySettings.targetVoltage], ['Chemistry', batterySettings.chemistry], ['Custom voltage', batterySettings.customVoltage], ['Custom usable %', batterySettings.customUsable], ['Daily energy', batterySettings.dailyEnergy], ['Days without charging', batterySettings.days], ['Reserve', batterySettings.reserve]].forEach(([label, value]) => {
-    if (value !== null && value !== undefined && value !== '') overviewItem(label, value);
-  });
-  const batteryResults = model.battery?.results || {};
-  overviewItem('Recommended capacity', batteryResults.capacity);
-  overviewItem('Nominal energy', batteryResults.nominal);
-  overviewItem('Usable target', batteryResults.usable);
-  overviewItem('Rounded target', batteryResults.rounded);
-  if (model.battery?.explanation) add('p', model.battery.explanation);
+  const storage = addSection('Battery & Storage');
+  add('h3', 'Calculated requirement', '', storage);
+  addKeyValues(storage, [
+    ['Target voltage', model.battery?.settings?.targetVoltage],
+    ['Chemistry', model.battery?.settings?.chemistry],
+    ['Days without charging', model.battery?.settings?.days],
+    ['Reserve', model.battery?.settings?.reserve],
+    ['Recommended capacity', model.battery?.results?.capacity],
+    ['Usable target', model.battery?.results?.usable],
+    ['Rounded target', model.battery?.results?.rounded]
+  ]);
+  if (model.battery?.explanation && model.battery.explanation !== '—') add('p', model.battery.explanation, 'print-note', storage);
+  add('h3', 'Configured bank', '', storage);
+  addKeyValues(storage, [
+    ['Single battery voltage', model.bank?.settings?.voltage],
+    ['Single battery capacity', model.bank?.settings?.ah],
+    ['Series / parallel', `${displayValue(model.bank?.settings?.series)} / ${displayValue(model.bank?.settings?.parallel)}`],
+    ['Bank voltage', model.bank?.results?.voltage],
+    ['Bank capacity', model.bank?.results?.ah],
+    ['Bank energy', model.bank?.results?.energy],
+    ['Physical battery count', model.bank?.results?.count]
+  ]);
 
-  add('h2', 'Battery Bank');
-  const bankSettings = model.bank?.settings || {};
-  overviewItem('Single battery voltage', bankSettings.voltage);
-  overviewItem('Single battery capacity', bankSettings.ah);
-  overviewItem('Series count', bankSettings.series);
-  overviewItem('Parallel count', bankSettings.parallel);
-  const bankResults = model.bank?.results || {};
-  overviewItem('Bank voltage', bankResults.voltage);
-  overviewItem('Bank capacity', bankResults.ah);
-  overviewItem('Bank energy', bankResults.energy);
-  overviewItem('Physical battery count', bankResults.count);
-
-  add('h2', 'Solar / MPPT');
-  const solarSettings = model.solarArray?.settings || {};
-  overviewItem('Panel watts', solarSettings.watts);
-  overviewItem('Voc', solarSettings.voc);
-  overviewItem('Vmp', solarSettings.vmp);
-  overviewItem('Isc', solarSettings.isc);
-  overviewItem('Imp', solarSettings.imp);
-  overviewItem('Voc temperature coefficient', solarSettings.coefficient);
-  overviewItem('Minimum temperature', solarSettings.minimumTemp);
-  overviewItem('Panels in series', solarSettings.series);
-  overviewItem('Parallel strings', solarSettings.parallel);
-  overviewItem('Battery-bank voltage', solarSettings.batteryVoltage);
-  overviewItem('Manufacturer filter', solarSettings.manufacturer);
-  const solarResults = model.solarArray?.results || {};
-  overviewItem('Array power', solarResults.watts);
-  overviewItem('Array Voc / cold-corrected Voc', solarResults.vocColdVoc);
-  overviewItem('Array Vmp', solarResults.vmp);
-  overviewItem('Array Isc / Array Imp', solarResults.iscImp);
-
-  add('h2', 'Controller Matching');
+  const solar = addSection('Solar & Charging');
+  addKeyValues(solar, [
+    ['Solar array', model.solarArray?.results?.watts],
+    ['Array Voc / cold Voc', model.solarArray?.results?.vocColdVoc],
+    ['Array Vmp', model.solarArray?.results?.vmp],
+    ['Array Isc / Imp', model.solarArray?.results?.iscImp],
+    ['Estimated daily solar', model.solarYield?.results?.daily],
+    ['Demand covered', model.solarYield?.results?.covered],
+    ['Good controller matches', model.solarArray?.controllers?.goodCount],
+    ['Controllers needing checking', model.solarArray?.controllers?.checkCount]
+  ]);
   const controllers = model.solarArray?.controllers || {};
-  overviewItem('Good matches', controllers.goodCount);
-  overviewItem('Needs checking', controllers.checkCount);
-  overviewItem('Not suitable', controllers.unsuitableCount);
-  add('h3', 'Good matches');
-  if (controllers.goodCount > 0 && controllers.goodMatches?.length) {
+  add('h3', 'Good controller matches', '', solar);
+  if (controllers.goodMatches?.length) {
     const matches = document.createElement('ul');
+    matches.className = 'print-list';
     controllers.goodMatches.forEach(match => {
       const item = document.createElement('li');
       item.textContent = match;
       matches.appendChild(item);
     });
-    container.appendChild(matches);
+    solar.appendChild(matches);
   } else {
-    add('p', 'No controller in the selected dataset passed all captured checks.');
+    add('p', 'No controller in the selected dataset passed all captured checks.', 'print-note', solar);
+  }
+  if (model.systemPlanner?.chargingEquipment?.length) {
+    add('h3', 'Charging equipment in the planner', '', solar);
+    addTable(solar, ['Equipment', 'Type', 'Output current'], model.systemPlanner.chargingEquipment.map(item => [item.name, item.type, item.outputCurrent]));
+  }
+  if (model.solarYield?.warning && model.solarYield.warning !== '—') add('p', model.solarYield.warning, 'print-note', solar);
+
+  const schedule = addSection('Circuit & Feeder Schedule');
+  if (model.systemPlanner?.circuits?.length) {
+    addTable(schedule, ['Circuit / node', 'From', 'To', 'Type', 'Design current', 'Length', 'Required cable', 'Installed cable', 'Suggested fuse', 'Installed fuse', 'Status'], model.systemPlanner.circuits.map(circuit => [
+      circuit.name,
+      circuit.from,
+      circuit.to,
+      circuit.type,
+      circuit.designCurrent,
+      circuit.length,
+      circuit.requiredCable,
+      circuit.installedCable,
+      circuit.suggestedFuse,
+      circuit.installedFuse,
+      circuit.status
+    ]), 'print-schedule');
+  } else {
+    add('p', 'No non-battery planner connections are available in this plan.', 'print-note', schedule);
   }
 
-  add('h2', 'Solar Yield');
-  const solarYieldSettings = model.solarYield?.settings || {};
-  overviewItem('Latitude', solarYieldSettings.latitude);
-  overviewItem('Month', solarYieldSettings.month);
-  overviewItem('Climate assumption', solarYieldSettings.climate);
-  overviewItem('Panel mounting', solarYieldSettings.mounting);
-  overviewItem('System efficiency', solarYieldSettings.efficiency);
-  overviewItem('Solar array size', solarYieldSettings.arraySize);
-  overviewItem('Daily demand', solarYieldSettings.dailyDemand);
-  const solarYieldResults = model.solarYield?.results || {};
-  overviewItem('Estimated daily solar', solarYieldResults.daily);
-  overviewItem('Equivalent peak sun', solarYieldResults.peakSun);
-  overviewItem('Demand covered', solarYieldResults.covered);
-  overviewItem('Array required for 100%', solarYieldResults.needed);
-  if (model.solarYield?.warning) add('p', model.solarYield.warning);
-
-  add('h2', 'Cable / Fuse');
-  const wireSettings = model.wire?.settings || {};
-  overviewItem('System voltage', wireSettings.voltage);
-  overviewItem('Load mode', wireSettings.mode);
-  overviewItem('Load value', wireSettings.load);
-  overviewItem('One-way cable length', wireSettings.length);
-  overviewItem('Maximum voltage drop', wireSettings.drop);
-  overviewItem('Planning margin', wireSettings.margin);
-  const wireResults = model.wire?.results || {};
-  overviewItem('Recommended cable', wireResults.cable);
-  overviewItem('AWG', wireResults.awg);
-  overviewItem('Actual voltage drop', wireResults.drop);
-  overviewItem('Suggested fuse', wireResults.fuse);
-  if (model.wire?.warning) add('p', model.wire.warning);
+  const warnings = addSection('Warnings / Checks');
+  const warningItems = model.systemPlanner?.warnings || [];
+  if (warningItems.length) {
+    const list = document.createElement('ul');
+    list.className = 'print-list print-warnings';
+    warningItems.forEach(warning => {
+      const item = document.createElement('li');
+      item.textContent = warning;
+      list.appendChild(item);
+    });
+    warnings.appendChild(list);
+  } else {
+    add('p', 'No planner warnings detected from the configured inputs.', 'print-note', warnings);
+  }
 
   const footer = document.createElement('footer');
+  footer.className = 'print-footer';
   const name = document.createElement('p');
   const url = document.createElement('p');
   const disclaimer = document.createElement('p');
@@ -242,7 +291,72 @@ function renderPrintSummaryV2(model) {
   footer.append(name, url, disclaimer);
   container.appendChild(footer);
 }
-function buildPrintModel(){const v=id=>$(id)?.value??'—',t=id=>$(id)?.textContent.trim()||'—',label=id=>$(id)?.selectedOptions[0]?.textContent.trim()||'—',controllers={goodMatches:[...document.querySelectorAll('.controller-item.fit .controller-name')].map(x=>x.textContent.trim())};controllers.goodCount=controllers.goodMatches.length;controllers.checkCount=document.querySelectorAll('.controller-item.maybe').length;controllers.unsuitableCount=document.querySelectorAll('.controller-item.no').length;const energy={settings:{systemVoltage:v('usage-system-voltage'),inverterEfficiency:v('inverter-eff')},devices:[...$('device-body').querySelectorAll('tr')].map(r=>({name:r.querySelector('.d-name').value,watts:r.querySelector('.d-watts').value,quantity:r.querySelector('.d-qty').value,hours:r.querySelector('.d-hours').value,supply:r.querySelector('.d-supply').value,wh:r.querySelector('.d-wh').textContent})),results:{dailyEnergy:t('usage-wh'),batteryDraw:t('usage-ah'),averageLoad:t('usage-average'),month:t('usage-month')}};const battery={settings:{targetVoltage:v('battery-system-voltage'),chemistry:label('battery-chem'),customVoltage:$('battery-system-voltage').value==='custom'?v('battery-custom-system'):null,customUsable:$('battery-chem').value==='custom'?v('battery-custom-usable'):null,dailyEnergy:v('battery-daily'),days:v('battery-days'),reserve:v('battery-reserve')},results:{capacity:t('battery-ah'),nominal:t('battery-wh'),usable:t('battery-usable'),rounded:t('battery-rounded')},explanation:t('battery-explain')};const bank={settings:{voltage:v('unit-voltage'),ah:v('unit-ah'),series:v('series-count'),parallel:v('parallel-count')},results:{voltage:t('bank-voltage'),ah:t('bank-ah'),energy:t('bank-kwh'),count:t('bank-count')}};const solarArray={settings:{watts:v('panel-watts'),voc:v('panel-voc'),vmp:v('panel-vmp'),isc:v('panel-isc'),imp:v('panel-imp'),coefficient:v('panel-voc-temp'),minimumTemp:v('cold-temp'),series:v('panels-series'),parallel:v('parallel-strings'),batteryVoltage:label('controller-battery-voltage'),manufacturer:label('brand-filter')},results:{watts:t('array-watts'),vocColdVoc:t('array-voc'),vmp:t('array-vmp'),iscImp:t('array-current')},controllers};const solarYield={settings:{latitude:v('solar-lat'),month:label('solar-month'),climate:label('solar-weather'),mounting:label('solar-mount'),efficiency:v('solar-eff'),arraySize:v('solar-watts'),dailyDemand:v('solar-demand')},results:{daily:t('solar-daily'),peakSun:t('solar-psh'),covered:t('solar-cover'),needed:t('solar-needed')},warning:document.querySelector('#yield .notice.warn')?.textContent.trim()||'—'};const wire={settings:{voltage:v('wire-voltage'),mode:label('wire-mode'),load:v('wire-load'),length:v('wire-length'),drop:label('wire-drop'),margin:label('wire-margin')},results:{cable:t('wire-size'),awg:t('wire-awg'),drop:t('wire-drop-result'),fuse:t('wire-fuse')},warning:document.querySelector('#wire .notice.warn')?.textContent.trim()||'—'};return{generatedAt:new Date().toLocaleDateString(),overview:{dailyEnergy:energy.results.dailyEnergy,batteryTarget:`${battery.results.capacity} @ ${battery.settings.targetVoltage}V`,batteryBank:`${bank.results.voltage} / ${bank.results.ah} / ${bank.results.energy} / ${bank.results.count} batteries`,solarArray:solarArray.results.watts,estimatedSolar:solarYield.results.daily,cable:`${wire.results.cable} / ${wire.results.fuse}`},energy,battery,bank,solarArray,solarYield,wire}}
+function buildSystemPlannerPrintModel(){
+  const totals = plannerCalculate();
+  const batteries = plannerState.nodes.filter(node => node.type === 'battery');
+  const summaryTotals = batteries.reduce((summary, battery) => {
+    const total = totals.get(battery.id) || {loadCurrentA: 0, chargeCurrentA: 0};
+    summary.loadCurrentA += total.loadCurrentA;
+    summary.chargeCurrentA += total.chargeCurrentA;
+    return summary;
+  }, {loadCurrentA: 0, chargeCurrentA: 0});
+  const warnings = [];
+  const circuits = plannerState.nodes.filter(node => node.type !== 'battery').map(node => {
+    const parent = plannerNode(node.parentId);
+    const connection = plannerConnection(node, totals);
+    const installedCable = node.settings.cable === '' ? 'Not entered' : `${node.settings.cable} mm²`;
+    const installedFuse = node.settings.fuse === '' ? 'Not entered' : `${node.settings.fuse} A`;
+    if (!connection.valid) {
+      warnings.push(`${node.name}: ${connection.reason}`);
+      return {
+        name: node.name,
+        from: parent?.name || '—',
+        to: node.name,
+        type: plannerTypes[node.type],
+        designCurrent: '—',
+        length: node.settings.length === '' ? 'Not entered' : `${node.settings.length} m`,
+        requiredCable: 'Unavailable',
+        installedCable,
+        suggestedFuse: 'Unavailable',
+        installedFuse,
+        status: 'Unavailable'
+      };
+    }
+    if (connection.cable.status !== 'OK') warnings.push(`${node.name}: cable — ${connection.cable.message}`);
+    if (connection.fuse.status !== 'MATCH') warnings.push(`${node.name}: fuse — ${connection.fuse.message}`);
+    const isChargeSource = node.type === 'mppt' || node.type === 'dcDc';
+    return {
+      name: node.name,
+      from: isChargeSource ? node.name : parent?.name || '—',
+      to: isChargeSource ? parent?.name || '—' : node.name,
+      type: plannerTypes[node.type],
+      designCurrent: plannerCurrentText(connection.designCurrentA),
+      length: node.settings.length === '' ? 'Not entered' : `${node.settings.length} m`,
+      requiredCable: `${connection.recommendedCableMm2} mm² · AWG ${connection.awg}`,
+      installedCable,
+      suggestedFuse: connection.suggestedFuseA ? `${connection.suggestedFuseA} A` : 'Increase cable',
+      installedFuse,
+      status: `Cable: ${connection.cable.message} Fuse: ${connection.fuse.message}`
+    };
+  });
+  return {
+    summary: {
+      connectedLoad: plannerCurrentText(summaryTotals.loadCurrentA),
+      possibleCharging: plannerCurrentText(summaryTotals.chargeCurrentA)
+    },
+    circuits,
+    warnings,
+    chargingEquipment: plannerState.nodes.filter(node => node.type === 'mppt' || node.type === 'dcDc').map(node => {
+      const connection = plannerConnection(node, totals);
+      return {
+        name: node.name,
+        type: plannerTypes[node.type],
+        outputCurrent: connection.valid ? plannerCurrentText(connection.rawCurrentA) : 'Unavailable'
+      };
+    })
+  };
+}
+function buildPrintModel(){const v=id=>$(id)?.value??'—',t=id=>$(id)?.textContent.trim()||'—',label=id=>$(id)?.selectedOptions[0]?.textContent.trim()||'—',controllers={goodMatches:[...document.querySelectorAll('.controller-item.fit .controller-name')].map(x=>x.textContent.trim())};controllers.goodCount=controllers.goodMatches.length;controllers.checkCount=document.querySelectorAll('.controller-item.maybe').length;controllers.unsuitableCount=document.querySelectorAll('.controller-item.no').length;const energy={settings:{systemVoltage:v('usage-system-voltage'),inverterEfficiency:v('inverter-eff')},devices:[...$('device-body').querySelectorAll('tr')].map(r=>({name:r.querySelector('.d-name').value,watts:r.querySelector('.d-watts').value,quantity:r.querySelector('.d-qty').value,hours:r.querySelector('.d-hours').value,supply:r.querySelector('.d-supply').value,wh:r.querySelector('.d-wh').textContent})),results:{dailyEnergy:t('usage-wh'),batteryDraw:t('usage-ah'),averageLoad:t('usage-average'),month:t('usage-month')}};const battery={settings:{targetVoltage:v('battery-system-voltage'),chemistry:label('battery-chem'),customVoltage:$('battery-system-voltage').value==='custom'?v('battery-custom-system'):null,customUsable:$('battery-chem').value==='custom'?v('battery-custom-usable'):null,dailyEnergy:v('battery-daily'),days:v('battery-days'),reserve:v('battery-reserve')},results:{capacity:t('battery-ah'),nominal:t('battery-wh'),usable:t('battery-usable'),rounded:t('battery-rounded')},explanation:t('battery-explain')};const bank={settings:{voltage:v('unit-voltage'),ah:v('unit-ah'),series:v('series-count'),parallel:v('parallel-count')},results:{voltage:t('bank-voltage'),ah:t('bank-ah'),energy:t('bank-kwh'),count:t('bank-count')}};const solarArray={settings:{watts:v('panel-watts'),voc:v('panel-voc'),vmp:v('panel-vmp'),isc:v('panel-isc'),imp:v('panel-imp'),coefficient:v('panel-voc-temp'),minimumTemp:v('cold-temp'),series:v('panels-series'),parallel:v('parallel-strings'),batteryVoltage:label('controller-battery-voltage'),manufacturer:label('brand-filter')},results:{watts:t('array-watts'),vocColdVoc:t('array-voc'),vmp:t('array-vmp'),iscImp:t('array-current')},controllers};const solarYield={settings:{latitude:v('solar-lat'),month:label('solar-month'),climate:label('solar-weather'),mounting:label('solar-mount'),efficiency:v('solar-eff'),arraySize:v('solar-watts'),dailyDemand:v('solar-demand')},results:{daily:t('solar-daily'),peakSun:t('solar-psh'),covered:t('solar-cover'),needed:t('solar-needed')},warning:document.querySelector('#yield .notice.warn')?.textContent.trim()||'—'};const wire={settings:{voltage:v('wire-voltage'),mode:label('wire-mode'),load:v('wire-load'),length:v('wire-length'),drop:label('wire-drop'),margin:label('wire-margin')},results:{cable:t('wire-size'),awg:t('wire-awg'),drop:t('wire-drop-result'),fuse:t('wire-fuse')},warning:document.querySelector('#wire .notice.warn')?.textContent.trim()||'—'};const systemPlanner=buildSystemPlannerPrintModel();return{generatedAt:new Date().toLocaleDateString(),overview:{dailyEnergy:energy.results.dailyEnergy,batteryTarget:`${battery.results.capacity} @ ${battery.settings.targetVoltage}V`,batteryBank:`${bank.results.voltage} / ${bank.results.ah} / ${bank.results.energy} / ${bank.results.count} batteries`,solarArray:solarArray.results.watts,estimatedSolar:solarYield.results.daily},energy,battery,bank,solarArray,solarYield,wire,systemPlanner}}
 function buildPrintSummary(){const value=id=>$(id).textContent,field=id=>$(id).value,rows=[...$('device-body').querySelectorAll('tr')].map(r=>`<tr><td>${r.querySelector('.d-name').value}</td><td>${r.querySelector('.d-watts').value}</td><td>${r.querySelector('.d-qty').value}</td><td>${r.querySelector('.d-hours').value}</td><td>${r.querySelector('.d-supply').value.toUpperCase()}</td><td>${r.querySelector('.d-wh').textContent}</td></tr>`).join(''),good=[...document.querySelectorAll('.controller-item.fit .controller-name')].map(x=>x.textContent).join(', ')||'No controller in the selected dataset passed all captured checks.';$('print-summary').innerHTML=`<h1>Where’s Becky?</h1><h2>Van Electrical Plan</h2><p>Generated: ${new Date().toLocaleDateString()}</p><h2>Plan overview</h2><p>Daily use: ${value('usage-wh')} · Battery target: ${value('battery-ah')} · Battery bank: ${value('bank-voltage')} / ${value('bank-ah')} · Solar array: ${value('array-watts')} · Estimated solar: ${value('solar-daily')} · Circuit: ${field('wire-load')} / ${field('wire-length')}m / ${value('wire-size')}</p><h2>Energy budget</h2><table><thead><tr><th>Device</th><th>Watts</th><th>Qty</th><th>Hours/day</th><th>Supply</th><th>Wh/day</th></tr></thead><tbody>${rows}</tbody></table><p>Daily energy: ${value('usage-wh')} · Battery draw: ${value('usage-ah')} · Average load: ${value('usage-average')}</p><h2>Battery & bank</h2><p>${value('battery-explain')} Bank: ${value('bank-voltage')} / ${value('bank-ah')} / ${value('bank-kwh')} / ${value('bank-count')} batteries.</p><h2>Solar & MPPT</h2><p>Array: ${value('array-watts')} · Voc/cold Voc: ${value('array-voc')} · Vmp: ${value('array-vmp')} · Isc/Imp: ${value('array-current')}</p><p>Good matches: ${good}. Always verify the current manufacturer manual before purchase or installation.</p><h2>Solar yield</h2><p>${value('solar-daily')} · ${value('solar-psh')} · ${value('solar-cover')} · ${value('solar-needed')}</p><h2>Cable & fuse</h2><p>${value('wire-size')} · ${value('wire-awg')} · ${value('wire-drop-result')} · ${value('wire-fuse')}</p><footer>Where’s Becky? https://wheresbecky.co.uk/ · Planning aid only. Equipment manuals and applicable standards take priority.</footer>`}function printPlan(){const model=buildPrintModel();renderPrintSummaryV2(model);const title=document.title;document.title="Where's Becky - Van Electrical Plan";window.addEventListener('afterprint',()=>document.title=title,{once:true});window.print()}const printSummary=document.createElement('section');printSummary.id='print-summary';printSummary.setAttribute('aria-hidden','true');document.body.appendChild(printSummary);$('reset-plan').insertAdjacentHTML('beforebegin','<button class="btn secondary" type="button" id="print-plan">Print / Save PDF</button>');$('print-plan').addEventListener('click',printPlan);
 calcWire();calcUsage();calcBattery();calcBank();calcArray();calcSolar();
 const plannerTypes={battery:'Battery',busbar:'Busbar',fuseBox:'Fuse Box',load:'Load',inverter:'Inverter',mppt:'MPPT',dcDc:'DC-DC Charger'};
