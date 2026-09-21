@@ -34,7 +34,7 @@
   #print-summary .print-schedule{font-size:7pt}
   #print-summary .print-schedule th,#print-summary .print-schedule td{padding:3pt}
   #print-summary .print-list{margin:5pt 0;padding-left:16pt}
-  #print-summary .print-warnings{border-left:2pt solid #444;padding:5pt 0 5pt 16pt}
+  #print-summary .print-warnings{padding:5pt 0 5pt 16pt}
   #print-summary .print-footer{display:block;border-top:1pt solid #777;margin-top:16pt;padding-top:8pt;font-size:8pt;color:#333}
   #print-summary .print-footer p{margin:2pt 0}
 }
