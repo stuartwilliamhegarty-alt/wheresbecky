@@ -245,6 +245,53 @@ function renderPrintSummaryV2(model) {
   }
   if (model.solarYield?.warning && model.solarYield.warning !== '—') add('p', model.solarYield.warning, 'print-note', solar);
 
+  const diagram = addSection('Electrical System Diagram');
+  add('p', model.systemPlanner?.mode === 'modify'
+    ? 'Print view of the configured built installation. Labels show the recorded route, cable and protection so the drawing can be checked against the van.'
+    : 'Print view of the planned installation. Each lane follows the configured parent connection and carries the planner recommendation for cable and protection.', 'print-note', diagram);
+  const diagramLegend = document.createElement('div');
+  diagramLegend.className = 'print-diagram-legend';
+  [['Source / parent','print-diagram-source'],['Distribution / protection','print-diagram-protection'],['Load / equipment','print-diagram-load']].forEach(([label, className]) => {
+    const item = document.createElement('span');
+    item.className = 'print-diagram-legend-item';
+    const swatch = document.createElement('i');
+    swatch.className = className;
+    item.append(swatch, document.createTextNode(label));
+    diagramLegend.appendChild(item);
+  });
+  diagram.appendChild(diagramLegend);
+  const diagramList = document.createElement('div');
+  diagramList.className = 'print-diagram-list';
+  (model.systemPlanner?.circuits || []).forEach((circuit, index) => {
+    const lane = document.createElement('article');
+    lane.className = 'print-diagram-lane';
+    const number = document.createElement('span');
+    number.className = 'print-diagram-number';
+    number.textContent = String(index + 1).padStart(2, '0');
+    const from = document.createElement('div');
+    from.className = 'print-diagram-node print-diagram-source';
+    from.textContent = circuit.from;
+    const path = document.createElement('div');
+    path.className = 'print-diagram-path';
+    const arrow = document.createElement('span');
+    arrow.className = 'print-diagram-arrow';
+    arrow.textContent = '→';
+    const pathLabel = document.createElement('span');
+    pathLabel.className = 'print-diagram-path-label';
+    pathLabel.textContent = `${circuit.type} · ${circuit.designCurrent} · ${circuit.length}`;
+    path.append(arrow, pathLabel);
+    const to = document.createElement('div');
+    to.className = `print-diagram-node ${/fuse|busbar/i.test(circuit.type) ? 'print-diagram-protection' : 'print-diagram-load'}`;
+    to.textContent = circuit.to;
+    const details = document.createElement('div');
+    details.className = 'print-diagram-details';
+    details.textContent = `Cable ${circuit.requiredCable} · Fuse ${circuit.suggestedFuse}`;
+    lane.append(number, from, path, to, details);
+    diagramList.appendChild(lane);
+  });
+  if (!diagramList.children.length) add('p', 'Add planner connections to generate the circuit diagram.', 'print-note', diagram);
+  else diagram.appendChild(diagramList);
+
   const schedule = addSection('Circuit & Feeder Schedule');
   if (model.systemPlanner?.circuits?.length) {
     addTable(schedule, ['Circuit / node', 'From', 'To', 'Type', 'Design current', 'Length', 'Required cable', 'Installed cable', 'Suggested fuse', 'Installed fuse', 'Status'], model.systemPlanner.circuits.map(circuit => [
@@ -345,6 +392,7 @@ function buildSystemPlannerPrintModel(){
       connectedLoad: plannerCurrentText(summaryTotals.loadCurrentA),
       possibleCharging: plannerCurrentText(summaryTotals.chargeCurrentA)
     },
+    mode: plannerInstallMode,
     circuits,
     warnings,
     chargingEquipment: plannerState.nodes.filter(node => node.type === 'mppt' || node.type === 'dcDc').map(node => {

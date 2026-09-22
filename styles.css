@@ -33,6 +33,20 @@
   #print-summary .print-appliance-table th:first-child{width:30%}
   #print-summary .print-schedule{font-size:7pt}
   #print-summary .print-schedule th,#print-summary .print-schedule td{padding:3pt}
+  #print-summary .print-diagram-legend{display:flex;flex-wrap:wrap;gap:8pt 14pt;margin:6pt 0 8pt;color:#444;font-size:8pt}
+  #print-summary .print-diagram-legend-item{display:inline-flex;align-items:center;gap:4pt}
+  #print-summary .print-diagram-legend-item i{display:inline-block;width:10pt;height:7pt;border:1pt solid #777;border-radius:2pt}
+  #print-summary .print-diagram-source{border-color:#47718c!important;background:#edf6fb!important}
+  #print-summary .print-diagram-protection{border-color:#b47716!important;background:#fff7e8!important}
+  #print-summary .print-diagram-load{border-color:#68747b!important;background:#f4f5f6!important}
+  #print-summary .print-diagram-list{display:grid;gap:6pt}
+  #print-summary .print-diagram-lane{display:grid;grid-template-columns:18pt minmax(90pt,1fr) 82pt minmax(90pt,1fr);grid-template-rows:auto auto;align-items:center;column-gap:7pt;row-gap:2pt;border:1pt solid #c4c8ca;border-left:3pt solid #10a7e8;padding:6pt 7pt;break-inside:avoid;page-break-inside:avoid}
+  #print-summary .print-diagram-number{grid-row:1 / span 2;color:#666;font-size:7pt;font-weight:700}
+  #print-summary .print-diagram-node{min-width:0;border:1pt solid #777;border-radius:4pt;padding:5pt 6pt;font-weight:700;overflow-wrap:anywhere}
+  #print-summary .print-diagram-path{display:flex;flex-direction:column;align-items:center;min-width:0;color:#555}
+  #print-summary .print-diagram-arrow{font-size:14pt;line-height:1;font-weight:700;color:#10a7e8}
+  #print-summary .print-diagram-path-label{font-size:7pt;text-align:center;overflow-wrap:anywhere}
+  #print-summary .print-diagram-details{grid-column:2 / -1;color:#444;font-size:7pt;overflow-wrap:anywhere}
   #print-summary .print-list{margin:5pt 0;padding-left:16pt}
   #print-summary .print-warnings{padding:5pt 0 5pt 16pt}
   #print-summary .print-footer{display:block;border-top:1pt solid #777;margin-top:16pt;padding-top:8pt;font-size:8pt;color:#333}
@@ -103,6 +117,9 @@
   .calc-tool-grid{grid-template-columns:1fr}
   .calculator-page .result-grid{grid-template-columns:1fr}
 }
+#print-summary .print-diagram-legend-item i.print-diagram-source{background:#47718c}
+#print-summary .print-diagram-legend-item i.print-diagram-protection{background:#b47716}
+#print-summary .print-diagram-legend-item i.print-diagram-load{background:#68747b}
 
 :root{--max:1320px}
 #distribution-planner>.wrap{width:min(100% - 2rem,var(--max))}
