@@ -117,11 +117,41 @@
   .calc-tool-grid{grid-template-columns:1fr}
   .calculator-page .result-grid{grid-template-columns:1fr}
 }
-#print-summary .print-diagram-legend-item i.print-diagram-source{background:#47718c}
-#print-summary .print-diagram-legend-item i.print-diagram-protection{background:#b47716}
-#print-summary .print-diagram-legend-item i.print-diagram-load{background:#68747b}
+  #print-summary .print-diagram-legend-item i.print-diagram-source{background:#47718c}
+  #print-summary .print-diagram-legend-item i.print-diagram-protection{background:#b47716}
+  #print-summary .print-diagram-legend-item i.print-diagram-load{background:#68747b}
+  #print-summary .print-diagram-legend-item i.print-diagram-charge{background:#1685a8}
+  #print-summary .print-topology-svg{display:block;width:100%;height:auto;margin:8pt 0 0;border:1pt solid #b8c0c4;background:#fbfcfc}
+  #print-summary .print-topology-wire{fill:none;stroke:#1685a8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  #print-summary .print-topology-arrowhead{fill:#1685a8}
+  #print-summary .print-topology-edge-number{fill:#111;font:700 7pt Arial,sans-serif;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+  #print-summary .print-topology-details-heading{margin:5pt 0 2pt;color:#444;font-size:7.5pt}
+  #print-summary .print-topology-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2pt 12pt;font-size:7pt;line-height:1.25}
+  #print-summary .print-topology-detail-row{min-width:0;break-inside:avoid;page-break-inside:avoid}
+  #print-summary .print-topology-detail-row strong,#print-summary .print-topology-detail-row span{display:block;overflow-wrap:anywhere}
+  #print-summary .print-topology-detail-row strong{color:#111}
+  #print-summary .print-topology-detail-row span{color:#444}
+  #print-summary .print-topology-negative-rail{stroke:#555;stroke-width:2;stroke-dasharray:5 4}
+  #print-summary .print-topology-negative-label{fill:#333;font:700 7pt Arial,sans-serif}
+  #print-summary .print-topology-negative-note{fill:#555;font:600 6.5pt Arial,sans-serif}
+  #print-summary .print-topology-node rect{fill:#f4f5f6;stroke:#68747b;stroke-width:1.5}
+  #print-summary .print-topology-node.print-topology-battery rect{fill:#edf6fb;stroke:#47718c}
+  #print-summary .print-topology-node.print-topology-busbar rect{fill:#eef8f1;stroke:#2a7a52;stroke-width:2.5}
+  #print-summary .print-topology-node.print-topology-fuseBox rect{fill:#fff7e8;stroke:#b47716}
+  #print-summary .print-topology-node.print-topology-mppt rect,#print-summary .print-topology-node.print-topology-dcDc rect{fill:#eaf8fb;stroke:#1685a8}
+  #print-summary .print-topology-node.print-topology-inverter rect{fill:#f7edfb;stroke:#884a9e}
+  #print-summary .print-topology-title{fill:#111;font:700 10pt Arial,sans-serif}
+  #print-summary .print-topology-type{fill:#555;font:700 7pt Arial,sans-serif;text-transform:uppercase}
+  #print-summary .print-topology-detail{fill:#444;font:600 7pt Arial,sans-serif}
 
 :root{--max:1320px}
+:root{--max:1500px}
+.wrap{width:min(100% - 2rem,var(--max))}
+.controller-explainer{margin:.8rem 0 0;color:var(--muted);font-size:.9rem}
+.controller-item{grid-template-columns:minmax(230px,1.5fr) repeat(4,minmax(115px,.72fr)) minmax(90px,.5fr)}
+@media(max-width:1200px){.controller-item{grid-template-columns:minmax(210px,1.4fr) repeat(4,minmax(100px,.7fr))}.controller-status{grid-column:1/-1}}
+@media(max-width:900px){.controller-item{grid-template-columns:1fr 1fr}.controller-name{grid-column:1/-1}.controller-status{grid-column:auto}}
+@media(max-width:820px){.controller-item{grid-template-columns:1fr}.controller-name{grid-column:auto}}
 #distribution-planner>.wrap{width:min(100% - 2rem,var(--max))}
 .planner-layout{grid-template-columns:minmax(0,.82fr) minmax(420px,1fr)}
 @media(max-width:820px){.planner-layout{grid-template-columns:1fr}}
@@ -147,3 +177,4 @@
 .controller-count{display:inline-grid;place-items:center;min-width:2rem;height:2rem;padding:0 .55rem;border:1px solid currentColor;border-radius:999px;font-size:.82rem}
 .controller-group-list{display:grid;gap:.75rem;padding:0 1rem 1rem}
 .controller-group .controller-item{margin:0}
+.controller-input-detail{margin-top:.18rem;color:var(--muted);font-size:.72rem;line-height:1.25;overflow-wrap:anywhere}

@@ -248,10 +248,10 @@ function renderPrintSummaryV2(model) {
   const diagram = addSection('Electrical System Diagram');
   add('p', model.systemPlanner?.mode === 'modify'
     ? 'Print view of the configured built installation. Labels show the recorded route, cable and protection so the drawing can be checked against the van.'
-    : 'Print view of the planned installation. Each lane follows the configured parent connection and carries the planner recommendation for cable and protection.', 'print-note', diagram);
+    : 'Print view of the planned installation. Power sources, distribution, protection and loads are arranged as a connected wiring path.', 'print-note', diagram);
   const diagramLegend = document.createElement('div');
   diagramLegend.className = 'print-diagram-legend';
-  [['Source / parent','print-diagram-source'],['Distribution / protection','print-diagram-protection'],['Load / equipment','print-diagram-load']].forEach(([label, className]) => {
+  [['Source / battery','print-diagram-source'],['Distribution / protection','print-diagram-protection'],['Load / equipment','print-diagram-load'],['Charging source','print-diagram-charge']].forEach(([label, className]) => {
     const item = document.createElement('span');
     item.className = 'print-diagram-legend-item';
     const swatch = document.createElement('i');
@@ -260,37 +260,169 @@ function renderPrintSummaryV2(model) {
     diagramLegend.appendChild(item);
   });
   diagram.appendChild(diagramLegend);
-  const diagramList = document.createElement('div');
-  diagramList.className = 'print-diagram-list';
-  (model.systemPlanner?.circuits || []).forEach((circuit, index) => {
-    const lane = document.createElement('article');
-    lane.className = 'print-diagram-lane';
-    const number = document.createElement('span');
-    number.className = 'print-diagram-number';
-    number.textContent = String(index + 1).padStart(2, '0');
-    const from = document.createElement('div');
-    from.className = 'print-diagram-node print-diagram-source';
-    from.textContent = circuit.from;
-    const path = document.createElement('div');
-    path.className = 'print-diagram-path';
-    const arrow = document.createElement('span');
-    arrow.className = 'print-diagram-arrow';
-    arrow.textContent = '→';
-    const pathLabel = document.createElement('span');
-    pathLabel.className = 'print-diagram-path-label';
-    pathLabel.textContent = `${circuit.type} · ${circuit.designCurrent} · ${circuit.length}`;
-    path.append(arrow, pathLabel);
-    const to = document.createElement('div');
-    to.className = `print-diagram-node ${/fuse|busbar/i.test(circuit.type) ? 'print-diagram-protection' : 'print-diagram-load'}`;
-    to.textContent = circuit.to;
-    const details = document.createElement('div');
-    details.className = 'print-diagram-details';
-    details.textContent = `Cable ${circuit.requiredCable} · Fuse ${circuit.suggestedFuse}`;
-    lane.append(number, from, path, to, details);
-    diagramList.appendChild(lane);
-  });
-  if (!diagramList.children.length) add('p', 'Add planner connections to generate the circuit diagram.', 'print-note', diagram);
-  else diagram.appendChild(diagramList);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.classList.add('print-topology-svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'Electrical system topology diagram');
+  const nodes = model.systemPlanner?.nodes || [];
+  const circuits = model.systemPlanner?.circuits || [];
+  if (nodes.length) {
+    const nodeWidth = 148;
+    const nodeHeight = 62;
+    const columnGap = 100;
+    const rowGap = 44;
+    const nodeById = new Map(nodes.map(node => [node.id, node]));
+    const rawLevels = new Map();
+    const resolveLevel = (node, trail = new Set()) => {
+      if (rawLevels.has(node.id)) return rawLevels.get(node.id);
+      if (trail.has(node.id)) return 0;
+      const parent = nodeById.get(node.parentId);
+      if (!parent) {
+        rawLevels.set(node.id, 0);
+        return 0;
+      }
+      const parentLevel = resolveLevel(parent, new Set([...trail, node.id]));
+      const level = node.type === 'mppt' || node.type === 'dcDc'
+        ? (parent.type === 'busbar' ? parentLevel : parentLevel - 1)
+        : parentLevel + 1;
+      rawLevels.set(node.id, level);
+      return level;
+    };
+    nodes.forEach(node => resolveLevel(node));
+    const minimumLevel = Math.min(...rawLevels.values(), 0);
+    const levelOf = node => rawLevels.get(node.id) - minimumLevel;
+    const groups = new Map();
+    nodes.forEach(node => {
+      const level = levelOf(node);
+      if (!groups.has(level)) groups.set(level, []);
+      groups.get(level).push(node);
+    });
+    const maxRows = Math.max(...[...groups.values()].map(group => group.length), 1);
+    const width = Math.max(1040, 64 + maxRows * (nodeWidth + columnGap));
+    const height = Math.max(360, 42 + (Math.max(...groups.keys(), 0) + 1) * (nodeHeight + rowGap));
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('height', height);
+    const positions = new Map();
+    [...groups.keys()].sort((a, b) => a - b).forEach(level => {
+      const arranged = groups.get(level).map(node => {
+        const siblings = node.parentId ? nodes.filter(candidate => candidate.parentId === node.parentId && levelOf(candidate) === level).sort((a, b) => a.name.localeCompare(b.name)) : [];
+        const siblingIndex = siblings.findIndex(candidate => candidate.id === node.id);
+        const parent = nodeById.get(node.parentId);
+        const parentPosition = positions.get(node.parentId);
+        const siblingGap = node.type === 'fuseBox' ? 170 : columnGap;
+        return {
+          node,
+          desiredX: parentPosition && siblingIndex >= 0 ? parentPosition.x + (siblingIndex - (siblings.length - 1) / 2) * (nodeWidth + siblingGap) : null
+        };
+      }).sort((a, b) => (a.desiredX ?? 0) - (b.desiredX ?? 0) || a.node.name.localeCompare(b.node.name));
+      const rowWidth = arranged.length * nodeWidth + Math.max(0, arranged.length - 1) * columnGap;
+      const hasParentAnchors = arranged.some(item => item.desiredX !== null);
+      if (hasParentAnchors) {
+        let cursor = null;
+        arranged.forEach(item => {
+          const desiredX = item.desiredX === null ? (cursor === null ? width / 2 - nodeWidth / 2 : cursor + nodeWidth + 24) : item.desiredX;
+          item.layoutX = cursor === null ? desiredX : Math.max(desiredX, cursor + nodeWidth + 24);
+          cursor = item.layoutX;
+        });
+        const minX = Math.min(...arranged.map(item => item.layoutX));
+        const maxX = Math.max(...arranged.map(item => item.layoutX + nodeWidth));
+        const shift = Math.max(24, (width - (maxX - minX)) / 2) - minX;
+        arranged.forEach(({node, layoutX}) => positions.set(node.id, {x: layoutX + shift, y: 20 + level * (nodeHeight + rowGap)}));
+      } else {
+        const startX = Math.max(24, (width - rowWidth) / 2);
+        arranged.forEach(({node}, index) => positions.set(node.id, {x: startX + index * (nodeWidth + columnGap), y: 20 + level * (nodeHeight + rowGap)}));
+      }
+    });
+    nodes.filter(node => (node.type === 'mppt' || node.type === 'dcDc') && nodeById.get(node.parentId)?.type === 'busbar')
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((node, index) => {
+        const parent = positions.get(node.parentId);
+        if (!parent) return;
+        const side = index % 2 === 0 ? -1 : 1;
+        const sideIndex = Math.floor(index / 2);
+        positions.set(node.id, {
+          x: side < 0 ? parent.x - nodeWidth - 90 - sideIndex * (nodeWidth + 24) : parent.x + nodeWidth + 90 + sideIndex * (nodeWidth + 24),
+          y: parent.y + sideIndex * (nodeHeight + 20)
+        });
+      });
+    const make = (tag, attrs = {}) => {
+      const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value));
+      return element;
+    };
+    const label = (parent, text, x, y, className) => {
+      const element = make('text', {x, y, class: className});
+      element.textContent = text;
+      parent.appendChild(element);
+    };
+    const defs = make('defs');
+    const marker = make('marker', {id: 'print-arrow', markerWidth: 7, markerHeight: 7, refX: 6, refY: 3.5, orient: 'auto'});
+    marker.appendChild(make('path', {d: 'M0,0 L7,3.5 L0,7 z', class: 'print-topology-arrowhead'}));
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+    nodes.forEach(node => {
+      if (!node.parentId) return;
+      const parent = positions.get(node.parentId);
+      const child = positions.get(node.id);
+      if (!parent || !child) return;
+      const isChargeSource = node.type === 'mppt' || node.type === 'dcDc';
+      const isSideInput = isChargeSource && nodeById.get(node.parentId)?.type === 'busbar';
+      const from = isChargeSource ? child : parent;
+      const to = isChargeSource ? parent : child;
+      const sourceOnLeft = child.x < parent.x;
+      const startX = isSideInput ? (sourceOnLeft ? child.x + nodeWidth : child.x) : from.x + nodeWidth / 2;
+      const startY = isSideInput ? child.y + nodeHeight / 2 : from.y + nodeHeight;
+      const endX = isSideInput ? (sourceOnLeft ? parent.x : parent.x + nodeWidth) : to.x + nodeWidth / 2;
+      const endY = isSideInput ? parent.y + nodeHeight / 2 : to.y;
+      const connection = circuits.find(item => item.name === node.name);
+      const midY = startY + (endY - startY) / 2;
+      const pathData = isSideInput ? `M ${startX} ${startY} H ${endX}` : `M ${startX} ${startY} V ${midY} H ${endX} V ${endY}`;
+      const path = make('path', {d: pathData, class: 'print-topology-wire', 'marker-end': 'url(#print-arrow)'});
+      svg.appendChild(path);
+      if (connection) {
+        const midX = (startX + endX) / 2;
+        label(svg, String(circuits.indexOf(connection) + 1).padStart(2, '0'), midX + (isSideInput ? 0 : Math.abs(startX - endX) < 1 ? 14 : 0), isSideInput ? startY - 8 : midY, 'print-topology-edge-number');
+      }
+    });
+    nodes.forEach(node => {
+      const pos = positions.get(node.id);
+      if (!pos) return;
+      const group = make('g', {class: `print-topology-node print-topology-${node.type}`});
+      group.appendChild(make('rect', {x: pos.x, y: pos.y, width: nodeWidth, height: nodeHeight, rx: 8}));
+      label(group, node.name, pos.x + 11, pos.y + 23, 'print-topology-title');
+      label(group, node.type === 'busbar' ? 'MAIN DISTRIBUTION' : plannerTypes[node.type], pos.x + 11, pos.y + 41, 'print-topology-type');
+      const circuit = circuits.find(item => item.name === node.name);
+      if (circuit) label(group, circuit.designCurrent, pos.x + 11, pos.y + 55, 'print-topology-detail');
+      svg.appendChild(group);
+    });
+    const negativeY = height - 25;
+    const negative = make('g', {class: 'print-topology-negative'});
+    negative.appendChild(make('line', {x1: 80, y1: negativeY, x2: width - 80, y2: negativeY, class: 'print-topology-negative-rail'}));
+    label(negative, 'NEGATIVE RETURN / COMMON NEGATIVE', 80, negativeY - 10, 'print-topology-negative-label');
+    label(negative, 'Battery negative, charging-source negatives and load/inverter negatives return to the common negative bus or approved chassis bond.', 80, negativeY + 15, 'print-topology-negative-note');
+    svg.appendChild(negative);
+    diagram.appendChild(svg);
+    const diagramDetails = document.createElement('div');
+    diagramDetails.className = 'print-topology-details';
+    circuits.forEach((connection, index) => {
+      const item = document.createElement('div');
+      item.className = 'print-topology-detail-row';
+      const route = document.createElement('strong');
+      route.textContent = `${String(index + 1).padStart(2, '0')} · ${connection.from} → ${connection.to}`;
+      const ratings = document.createElement('span');
+      ratings.textContent = `Cable: ${connection.requiredCable} · Fuse: ${connection.suggestedFuse} · Run: ${connection.length}`;
+      item.append(route, ratings);
+      diagramDetails.appendChild(item);
+    });
+    if (diagramDetails.children.length) {
+      const detailHeading = document.createElement('p');
+      detailHeading.className = 'print-topology-details-heading';
+      detailHeading.textContent = 'Connection key — match the numbers on the drawing to the cable and protection details below.';
+      diagram.append(detailHeading, diagramDetails);
+    }
+  } else {
+    add('p', 'Add planner connections to generate the circuit diagram.', 'print-note', diagram);
+  }
 
   const schedule = addSection('Circuit & Feeder Schedule');
   if (model.systemPlanner?.circuits?.length) {
@@ -393,6 +525,7 @@ function buildSystemPlannerPrintModel(){
       possibleCharging: plannerCurrentText(summaryTotals.chargeCurrentA)
     },
     mode: plannerInstallMode,
+    nodes: plannerState.nodes.map(node => ({id: node.id, type: node.type, name: node.name, parentId: node.parentId})),
     circuits,
     warnings,
     chargingEquipment: plannerState.nodes.filter(node => node.type === 'mppt' || node.type === 'dcDc').map(node => {
@@ -493,4 +626,68 @@ $('manual-close').addEventListener('click',closeManual);$('manual-close-bottom')
 <!-- Cloudflare Web Analytics -->
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;:&quot;f5d13d53947c447f9366c4ed1da155b7&quot;}"></script>
 <!-- End Cloudflare Web Analytics -->
+<script>
+(() => {
+  const list = document.getElementById('controller-list');
+  if (!list) return;
+  const referenceHead = document.querySelector('#controller-reference-body')?.closest('table')?.querySelector('thead tr');
+  if (referenceHead) {
+    ['Manufacturer / model','Battery voltage','PV input voltage','Max PV current (Isc)','Max charge output','Max PV power by battery voltage'].forEach((text, index) => {
+      if (referenceHead.cells[index]) referenceHead.cells[index].textContent = text;
+    });
+  }
+  const explain = document.createElement('p');
+  explain.className = 'controller-explainer';
+  explain.textContent = 'PV input limits describe what the solar array may feed into the controller. Max charge output is what the controller can deliver to the battery. A missing PV value is shown as “Check manual”.';
+  list.before(explain);
+  const numberFrom = text => {
+    const match = String(text || '').replace(/,/g, '').match(/-?\d+(?:\.\d+)?/);
+    return match ? Number(match[0]) : null;
+  };
+  const arrayValue = (id, pattern) => numberFrom(pattern.exec(document.getElementById(id)?.textContent || '')?.[1]);
+  const spareText = (input, limit, unit) => {
+    if (!Number.isFinite(input)) return 'Array value unavailable';
+    if (!Number.isFinite(limit)) return `Array: ${input} ${unit} · controller limit not captured`;
+    const difference = limit - input;
+    return difference >= 0 ? `Array: ${input} ${unit} · ${difference.toFixed(unit === 'W' ? 0 : 1)} ${unit} spare` : `Array: ${input} ${unit} · ${Math.abs(difference).toFixed(unit === 'W' ? 0 : 1)} ${unit} over recommendation`;
+  };
+  const setDetail = (metric, text) => {
+    let detail = metric.querySelector('.controller-input-detail');
+    if (!detail) {
+      detail = document.createElement('div');
+      detail.className = 'controller-input-detail';
+      metric.appendChild(detail);
+    }
+    detail.textContent = text;
+  };
+  const decorate = () => {
+    [...list.querySelectorAll('.controller-item')].forEach(item => {
+      if (item.querySelector('.controller-pv-current')) return;
+      const name = item.querySelector('.controller-name')?.textContent.trim();
+      const referenceRow = [...document.querySelectorAll('#controller-reference-body tr')].find(row => row.cells[0]?.textContent.includes(name));
+      const pvCurrent = document.createElement('div');
+      pvCurrent.className = 'controller-pv-current';
+      pvCurrent.innerHTML = `<div class="controller-meta">Max PV current</div><strong>${referenceRow?.cells[3]?.textContent.trim() || 'Check manual'}</strong>`;
+      item.insertBefore(pvCurrent, item.children[2] || item.lastElementChild);
+      const labels = item.querySelectorAll('.controller-meta');
+      if (labels[1]) labels[1].textContent = 'Max PV voltage';
+      if (labels[3]) labels[3].textContent = 'Max charge output';
+      if (labels[4]) labels[4].textContent = `Max PV power @ ${document.getElementById('controller-battery-voltage')?.value || 'battery'}V`;
+      const arrayColdVoc = arrayValue('array-voc', /\/\s*([\d.]+)/);
+      const arrayIsc = arrayValue('array-current', /^\s*([\d.]+)/);
+      const arrayPower = arrayValue('array-watts', /([\d.]+)/);
+      const batteryVoltage = numberFrom(document.getElementById('controller-battery-voltage')?.value);
+      const maxVoltage = numberFrom(item.children[1]?.querySelector('strong')?.textContent);
+      const maxCurrent = numberFrom(item.children[2]?.querySelector('strong')?.textContent);
+      const maxPower = numberFrom(item.children[4]?.querySelector('strong')?.textContent);
+      setDetail(item.children[1], spareText(arrayColdVoc, maxVoltage, 'V'));
+      setDetail(item.children[2], spareText(arrayIsc, maxCurrent, 'A'));
+      setDetail(item.children[3], Number.isFinite(arrayPower) && Number.isFinite(batteryVoltage) ? `Array: ${arrayPower} W ÷ ${batteryVoltage} V ≈ ${(arrayPower / batteryVoltage).toFixed(1)} A theoretical` : 'Array output estimate unavailable');
+      setDetail(item.children[4], spareText(arrayPower, maxPower, 'W'));
+    });
+  };
+  decorate();
+  new MutationObserver(decorate).observe(list, {childList:true, subtree:true});
+})();
+</script>
 </body></html>
